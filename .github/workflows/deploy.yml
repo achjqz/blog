@@ -34,12 +34,12 @@ jobs:
         sudo dpkg -i *.deb
         
     # from https://github.com/x-cold/yuque-hexo
+    #  npm install yuque-hexo -g
     - name: Setup Hexo Dependencies and Generate Public Files
       # env:
       #   YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
       run: |
         npm install hexo-cli -g
-      #  npm install yuque-hexo -g
         npm install
         npm run build
 
