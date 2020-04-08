@@ -3,23 +3,23 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: 潇晗宇浩的博客
 subtitle: ''
-description: ''
-keywords:
-author: John Doe
-language: en
+description: '记录生活'
+keywords: 科技,折腾,生活,android,后台 
+author: xhyh
+language: zh-Hans
 timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
-root: /
-permalink: :year/:month/:day/:title/
+url: http://xhyh.best/blog
+root: /blog/
+permalink: :category/:urlname/
 permalink_defaults:
 pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
-  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+  trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: false # Set to false to remove trailing '.html' from permalinks
 
 # Directory
 source_dir: source
@@ -32,7 +32,7 @@ i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :title.md # File name of new posts
+new_post_name: :year:month:day-:title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link:
@@ -47,7 +47,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace: ''
   wrap: true
   hljs: false
@@ -90,11 +90,20 @@ include:
 exclude:
 ignore:
 
+#rss
+feed:
+  type: rss2
+  limit: 20
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
-
+theme: apollo
+theme_config: 
+  menu:
+    Rss: /rss2.xml
+  disqus: xhyh
+  ga: UA-117536047-1
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
