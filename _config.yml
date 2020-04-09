@@ -102,8 +102,14 @@ theme: apollo
 theme_config: 
   menu:
     Rss: /rss2.xml
-  disqus: xhyh
   ga: UA-117536047-1
+  gitalk:
+    on: true
+    owner: achjqz
+    repo: blog
+    admin: ['achjqz']
+    clientID: 1ad726ece750d0552748
+    clientSecret: 6917691391883046d263b52a7107fab68e457194
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

@@ -4,8 +4,7 @@ name: Deploy To Github Pages
 # 当有 push 到仓库和外部触发的时候就运行
 on: [push, repository_dispatch]
 
-# YUQUE_TOKEN
-# Github_SSH_PRIVATE_KEY
+# ACCESS_TOKEN
 jobs:
   deploy: 
     name: Deploy Hexo Public To Pages
@@ -16,28 +15,24 @@ jobs:
     steps:
     # check it to your workflow can access it
     # from: https://github.com/actions/checkout
-    - name: Checkout Repository master branch
+    - name: Checkout 🛎️
       uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
       with:
         persist-credentials: false
         submodules: true
 
     # from: https://github.com/actions/setup-node  
-    - name: Setup Node.js 10.x 
+    - name: Setup Node.js 10.x 🔧
       uses: actions/setup-node@master
       with:
         node-version: "10.x"
 
-    - name: Install pandoc
+    - name: Install pandoc 🔧
       run: |
         curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep "browser_download_url.*deb" | cut -d '"' -f 4 | wget -qi -
         sudo dpkg -i *.deb
         
-    # from https://github.com/x-cold/yuque-hexo
-    #  npm install yuque-hexo -g
-    - name: Setup Hexo Dependencies and Generate Public Files
-      # env:
-      #   YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
+    - name: Setup Hexo Dependencies 🔧
       run: |
         npm install hexo-cli -g
         npm install
