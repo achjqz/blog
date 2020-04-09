@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.xhyh.best/tutorial/zero-to-hexo1/</loc>
+    
+    <lastmod>2020-04-09T13:12:34.978Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.xhyh.best/talk/hello-new-blog/</loc>
     
-    <lastmod>2020-04-09T09:25:37.670Z</lastmod>
+    <lastmod>2020-04-09T13:12:34.978Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/categories/</loc>
     
-    <lastmod>2020-04-09T09:25:37.670Z</lastmod>
+    <lastmod>2020-04-09T13:12:34.978Z</lastmod>
     
   </url>
   

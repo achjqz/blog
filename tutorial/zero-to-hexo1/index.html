@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建hexo博客并部署到Github Page(一) · 潇晗宇浩的博客</title><meta name="description" content="零基础搭建hexo博客并部署到Github Page(一) - xhyh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">零基础搭建hexo博客并部署到Github Page(一)</h1><div class="post-info">Apr 14, 2018<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p>用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松<br />
+本文从零开始, 搭建hexo博客并用Github Action发布到Github Page</p>
+<a id="more"></a>
+<h3 id="前期准备">前期准备</h3>
+<h4 id="工具介绍及安装">工具介绍及安装</h4>
+<ol type="1">
+<li><p><code>Git</code> 版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a href="https://git-scm.com/" target="_blank" rel="noopener">官网安装</a></p></li>
+<li><p><code>node.js</code> 为hexo提供JavaScript环境 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">官网安装</a></p></li>
+<li><p><code>Github Pages</code> Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装</p></li>
+</ol>
+<h4 id="hexo和主题安装">hexo和主题安装</h4>
+<blockquote>
+<p>hexo 和 hexo 主题的关系<br />
+hexo 主题定义了博客的界面布局, 颜色, 脚本等<br />
+hexo 将内容交给hexo 主题生成对应的排版</p>
+</blockquote>
+<ol type="1">
+<li><p>hexo 安装 <a href="https:/.io/" target="_blank" rel="noopener">官方文档</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure></li>
+<li><p>生成默认博客</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></li>
+<li><p>下载主题</p>
+<p>这里以<code>apollo</code>主题为例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-renderer-pug\</span><br><span class="line"> hexo-generator-feed \</span><br><span class="line"> hexo-generator-sitemap \ </span><br><span class="line"> hexo-browsersync  \</span><br><span class="line"> hexo-generator-archive \</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="博客及主题配置">博客及主题配置</h3>
+<h4 id="博客配置">博客配置</h4>
+<p>博客的配置主要都在<code>_config.yml</code>中</p>
+<ol type="1">
+<li><p>主题相关配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="comment"># 修改主题名称</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">apollo</span></span><br><span class="line"><span class="attr">theme_config:</span> </span><br><span class="line">  <span class="comment"># google analyse 配置</span></span><br><span class="line">  <span class="attr">ga:</span> <span class="string">UA-117536047-1</span></span><br><span class="line">  <span class="comment"># 评论区配置</span></span><br><span class="line">  <span class="attr">gitalk:</span></span><br><span class="line">    <span class="attr">on:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">owner:</span> <span class="string">achjqz</span></span><br><span class="line">    <span class="attr">repo:</span> <span class="string">blog</span></span><br><span class="line">    <span class="attr">admin:</span> <span class="string">['achjqz']</span></span><br><span class="line">    <span class="attr">clientID:</span> <span class="string">1ad726ece750d0552748</span></span><br><span class="line">    <span class="attr">clientSecret:</span> <span class="string">6917691391883046d263b52a7107fab68e457194</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure></li>
+<li><p>博客url配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">http://blog.xhyh.best</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:category/:urlname/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:year:month:day-:title.md</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为方便整理, 生成新文章会有时间前缀<br />
+而我们不希望在文章链接中包含时间, 这里使用了urlname, 需要在每篇文章头中添加这个变量</p>
+</blockquote></li>
+</ol>
+<h3 id="博客预览和修改">博客预览和修改</h3>
+<h4 id="常用命令">常用命令</h4>
+<ol type="1">
+<li><p><code>hexo clean</code> 清除缓存和生成的public文件夹</p></li>
+<li><p><code>hexo g</code> generator 生成public文件</p></li>
+<li><p><code>hexo s</code> server 本地预览, 加参数<code>--debug</code>可查看具体信息</p></li>
+<li><p><code>hexo d</code> deploy 部署到github</p></li>
+</ol>
+<h4 id="增加categorytag页面">增加category/tag页面</h4>
+<p>默认并没有category, tag页面, 需要在命令行中输入命令添加</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page category</span><br></pre></td></tr></table></figure><br />
+下一篇将介绍如何使用 Github Action 部署博客</p>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/talk/hello-new-blog/">上一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '1ad726ece750d0552748',     
+    clientSecret: '6917691391883046d263b52a7107fab68e457194',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'achjqz',     
+    admin: 'achjqz',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-117536047-1');</script></body></html>
