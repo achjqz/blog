@@ -1,0 +1,124 @@
+---
+title: 零基础搭建hexo博客并部署到Github Page(一)
+date: 2018-04-14 22:18:32
+urlname: zero-to-hexo1
+tags:
+- hexo
+- blog
+categories:
+- tutorial
+---
+
+用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 \
+本文从零开始, 搭建hexo博客并用Github Action发布到Github Page
+
+<!--more-->
+
+### 前期准备
+
+#### 工具介绍及安装
+
+   1. `Git`  版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, [官网安装](https://git-scm.com/)
+
+   2. `node.js`  为hexo提供JavaScript环境 [官网安装](https://nodejs.org/en/)
+
+   3. `Github Pages`   Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装
+
+#### hexo和主题安装
+
+   > hexo 和 hexo 主题的关系\
+   > hexo 主题定义了博客的界面布局, 颜色, 脚本等\
+   > hexo 将内容交给hexo 主题生成对应的排版
+
+   1. hexo 安装 [官方文档](https:/.io/)
+
+      ```bash
+      npm install hexo-cli -g
+      ```
+
+   2. 生成默认博客
+
+      ```bash
+      hexo init blog
+      cd blog
+      npm install
+      ```
+
+   3. 下载主题
+   
+      这里以`apollo`主题为例
+
+      ```bash
+      npm install --save hexo-renderer-pug\
+       hexo-generator-feed \
+       hexo-generator-sitemap \ 
+       hexo-browsersync  \
+       hexo-generator-archive \
+      git clone https://github.com/achjqz/hexo-theme-apollo.git themes/apollo
+      ```
+   
+### 博客及主题配置
+
+#### 博客配置
+
+   博客的配置主要都在`_config.yml`中
+
+   1. 主题相关配置
+
+      ```yml
+      ...
+      # 修改主题名称
+      theme: apollo
+      theme_config: 
+        # google analyse 配置
+        ga: UA-117536047-1
+        # 评论区配置
+        gitalk:
+          on: true
+          owner: achjqz
+          repo: blog
+          admin: ['achjqz']
+          clientID: 1ad726ece750d0552748
+          clientSecret: 6917691391883046d263b52a7107fab68e457194
+      ...
+      ```
+    
+   2. 博客url配置
+
+      ```yml
+      url: http://blog.xhyh.best
+      root: /
+      permalink: :category/:urlname/
+
+      new_post_name: :year:month:day-:title.md
+      ```
+      > 为方便整理, 生成新文章会有时间前缀\
+      > 而我们不希望在文章链接中包含时间, 这里使用了urlname, 需要在每篇文章头中添加这个变量
+
+### 博客预览和修改
+
+#### 常用命令
+
+   1. `hexo clean`  清除缓存和生成的public文件夹
+
+   2. `hexo g`  generator  生成public文件
+
+   3. `hexo s`  server     本地预览, 加参数`--debug`可查看具体信息
+
+   4. `hexo d`   deploy	   部署到github
+
+#### 增加category/tag页面
+
+   默认并没有category, tag页面, 需要在命令行中输入命令添加
+
+   ```bash
+   hexo new page category
+   ```
+\
+下一篇将介绍如何使用 Github Action 部署博客
+
+
+
+
+
+
