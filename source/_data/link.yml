@@ -1,0 +1,19 @@
+class:
+  class_name: 友情链接
+  link_list:
+    1:
+      name: prime
+      link: https://primelyw.github.io/
+      avatar: https://blog.primelyw.top/img/avatar2.jpg
+      descr: 枫云李 向着风，拥抱彩虹
+    2:
+      name: Deershun
+      link: https://liduoshun.github.io/
+      avatar: https://liduoshun.github.io/images/logo.jpg
+      descr: 咸鱼
+    3:
+      name: 404NotFound
+      link: https://songshuwei.xyz/
+      avatar: https://songshuwei.xyz/images/icon.jpeg
+      descr: 西南地区某不知名985本科生
+

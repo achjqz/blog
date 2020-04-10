@@ -19,7 +19,7 @@ categories:
 
 1. 新建workflow文件
    
-   只有当项目中`.github/workflow`目录下存在已`.yml`的配置才会触发`Github Actions`
+   只有当项目中`.github/workflow`目录下存在以`.yml`结尾的配置才会触发`Github Actions`
    
    ``` bash
    cd Blog
@@ -97,7 +97,7 @@ categories:
 
 有了ssh私钥可以实现免密码将博客推送到Github 
 
-具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.best/tutorial/linux_ssh/), 只用完成第一部分ssh生成
+具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.best/tutorial/linux-ssh/), 只用完成第一部分ssh生成
 
 #### 生成ACCESS_SECRET
 
