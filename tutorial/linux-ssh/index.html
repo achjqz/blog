@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Linux下ssh的配置 · 潇晗宇浩的博客</title><meta name="description" content="Linux下ssh的配置 - xhyh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Linux下ssh的配置</h1><div class="post-info">Sep 28, 2018<a class="tag-title" href="/tags/linux/">#linux</a><a class="tag-title" href="/tags/ssh/">#ssh</a><a class="tag-title" href="/tags/ssh-agent/">#ssh-agent</a></div><div class="post-content"><p>本文带你了解ssh, 如何实现ssh免密码登陆? 如何使用ssh做端口转发, 跳板?</p>
+<a id="more"></a>
+<h4 id="生成ssh-key">生成ssh key</h4>
+<p>本文以Linux为例, 其他平台可参照<a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener">Github官方文档</a>操作</p>
+<ol type="1">
+<li><p>生成2048位的密匙 <code>passphrase</code> 可以设置为空</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">"your_email@example.com"</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .ssh directory: 700 (drwx------)</span></span><br><span class="line">chmod 700 .ssh</span><br><span class="line"><span class="comment"># public key (.pub file): 644 (-rw-r--r--)</span></span><br><span class="line">chmod 644 .ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># private key (id_rsa): 600 (-rw-------)</span></span><br><span class="line">chmod 600 .ssh/id_rsa</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="服务器设置">服务器设置</h4>
+<ol type="1">
+<li><p>将公匙用<code>ssh-copy-id</code> 命令传给服务器,实现ssh免密码登陆</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@serverip</span><br></pre></td></tr></table></figure></li>
+<li><p>服务器端设置<code>/etc/ssh/sshd_config</code>, 使得不能用密码登陆root用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改配置</span></span><br><span class="line">PermitRootLogin yes</span><br><span class="line">PasswordAuthentication no</span><br></pre></td></tr></table></figure></li>
+<li><p>本地新建一个config文件,填入服务器信息,实现简化登陆</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">touch ~/.ssh/config</span><br><span class="line"><span class="comment"># config file</span></span><br><span class="line">Host name</span><br><span class="line">  Hostname serverip</span><br><span class="line">  User root</span><br></pre></td></tr></table></figure></li>
+<li><p>查看服务器ssh登陆日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp name:/var/<span class="built_in">log</span>/btmp btmp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 筛选日志信息, 实现显示 次数+ IP</span></span><br><span class="line">lastb -f btmp | awk <span class="string">'&#123;print $3&#125;'</span> | sort | uniq -c | sort -nr | more</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="ssh高级操作">ssh高级操作</h4>
+<ol type="1">
+<li><p>实现端口转发,将服务器用作代理访问其他网站</p>
+<p>命令: <code>ssh -N -f -L  \&lt;local port&gt;:\&lt;remote host&gt;:\&lt;remote port&gt; \&lt;SSH hostname&gt;</code></p>
+<p>这样就将IP为remote host机器的remote port通过中间服务器映射到本地机器的localport</p>
+<blockquote>
+<p>解释:</p>
+<p>-N 指这个连接不需要执行任何命令。仅仅做端口转发</p>
+<p>-f 在后台运行</p>
+<p>-L 做本地映射端口，被冒号分割的三个部分含义分别是</p>
+<p>需要使用的本地端口号 </br> ​需要访问的目标机器IP地址 </br> 需要访问的目标机器端口 </br></p>
+</blockquote></li>
+<li><p>将私匙添加到ssh-agent,避免每次都要输密码</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start ssh-agent</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(ssh-agent -s)</span>"</span></span><br><span class="line">&gt; Agent pid 59566</span><br><span class="line"></span><br><span class="line"><span class="comment"># add ssh key</span></span><br><span class="line">ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure></p></li>
+<li><p>跳板登陆 本地A, 跳板服务器B, 目标服务器C</p>
+<p>首先将本地A均可以ssh登陆B和C</p>
+<p>当连接服务器B时,使用ssh -A命令, 以打开agent forwarding</p>
+<p>当服务器B连接服务器C时, 就不用再输密码了, 相当于这台服务器充当了转发信息的功能,把私钥操作的request转发到了本机的agent, 然后再将agent的response原路返回</p></li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/talk/hello-new-blog/">上一篇</a><a class="next" href="/tutorial/zero-to-hexo1/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '1ad726ece750d0552748',     
+    clientSecret: '6917691391883046d263b52a7107fab68e457194',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'achjqz',     
+    admin: 'achjqz',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-117536047-1');</script></body></html>
