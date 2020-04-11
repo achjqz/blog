@@ -1,5 +1,5 @@
 ---
-title: 零基础搭建hexo博客并部署到Github Page(二)
+title: 用Github Actions将Hexo博客部署到Github Page
 date: 2020-04-10 10:43:08
 urlname: zero-to-hexo2
 tags: 
@@ -101,7 +101,7 @@ categories:
 
 #### 生成ACCESS_SECRET
 
-有了ACCESS_SECRET, `Github Actions` 才能有权限写入仓库
+有了ACCESS_SECRET, `Github Actions` 才有权限写入仓库
 
 可以在Github账户设置中生成一个
 ![token](https://pic.rmb.bdstatic.com/3e96456f3136c30e6daee91f21d00176.png)
