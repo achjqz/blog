@@ -7,6 +7,7 @@ tags:
 - hexo
 categories:
 - tutorial
+desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page'
 ---
 
 [上篇博客](https://blog.xhyh.best/tutorial/zero-to-hexo1/)中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page
