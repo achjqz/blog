@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次阿里云被攻击 · 潇晗宇浩的博客</title><meta name="description" content="之前申请了免费的阿里云学生机, 部署了服务后就没管了, 前几天阿里云连续两天发来了服务器有安全漏洞的安全警告邮件, 登上管理页一看, 还真的被hack了..."><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">记一次阿里云被攻击</h1><div class="post-info">Apr 12, 2020<a class="tag-title" href="/tags/server/">#server</a><a class="tag-title" href="/tags/security/">#security</a></div><div class="post-content"><p>之前申请了免费的阿里云学生机, 部署了服务后就没管了, 前几天阿里云连续两天发来了安全警告邮件, 登上管理页一看, 还真的被hack了...</p>
+<a id="more"></a>
+<h4 id="事情开端">事情开端</h4>
+<p>收到第一封阿里发的邮件 <img src="https://pic.rmb.bdstatic.com/bf8743473cee025d4c2bdc9523a93e5f.png" alt="mail-1" /> 当时在电脑右下角弹出来了, 我正好在忙其他的, 想了想我服务器上也没跑什么不安全的东西, 也许又是某个库(如<code>fastjson</code>)爆出的高危漏洞, 就没管它了</p>
+<blockquote>
+<p>现在重看发现上面写的内容是<strong>挖矿程序</strong>, 当时如果看到了应该会立即处理吧</p>
+</blockquote>
+<p>第二天收到第二封阿里发的邮件 <img src="https://pic.rmb.bdstatic.com/f9518a806696c111e4253d67b9fd65ae.png" alt="mail-2" /> 这天不忙, 点进去看了, 觉得很奇怪, 怎么变成了我<strong>对外攻击</strong>了啊?</p>
+<p>于是便打开阿里云控制台查看情况</p>
+<h4 id="情况分析">情况分析</h4>
+<figure>
+<img src="https://pic.rmb.bdstatic.com/eaa8ce2a19586e83a0d76fca536d2cb7.png" alt="" /><figcaption>alert-1</figcaption>
+</figure>
+<figure>
+<img src="https://pic.rmb.bdstatic.com/81adc00297cf1dae3a7d81d09458f259.png" alt="" /><figcaption>alert-2</figcaption>
+</figure>
+<p>打开控制台后便看到了这两条警告</p>
+<p>第一条是显示被植入了挖矿程序</p>
+<p>第二条是显示在疯狂和外网IP通讯</p>
+<p>然后去<a href="https://github.com/docker-library/redis/issues/217" target="_blank" rel="noopener">网上</a>查了一下, 这个挖矿程序在<code>redis docker</code>中十分盛行, 当然不是镜像的锅, 而是创建<code>redis</code>时没有设密码, 而<code>redis</code>本身防护做得不好, 导致可以任意的文件读写, 造成了被黑客攻击, 植入程序</p>
+<p>其实我在很早就知道无密码的<code>redis</code>有很大的安全风险, 原来用腾讯云部署应用时, 为了方便就没给<code>redis</code>上密码, 后来发现<code>redis</code>服务隔一天左右就会自动停止服务, 去查了一下发现是被攻击了, 后面自己使用<code>redis</code>都会上密码</p>
+<blockquote>
+<p>给这次开redis服务的同学一个教训了</p>
+</blockquote>
+<h4 id="损失">损失</h4>
+<p>分析完原因后想马上登陆服务器关掉<code>redis</code>, 然后一直连接不上, 估计是cpu跑到了100%</p>
+<p>迫不得已只能重启服务器(幸好redis没开--restart always)</p>
+<p>然而, 登陆发现<code>mysql</code>里面的数据全没了!!</p>
+<p>我这才意识到, 每次新建<code>mysql</code>的时候, 我都偷懒没做文件映射, 也没对数据做定期备份</p>
+<h4 id="教训">教训</h4>
+<ol type="1">
+<li><p>不要忽视任何一封安全邮件</p></li>
+<li><p>开<code>redis</code>设密码</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在容器执行redis-server启动命令，并打开redis持久化</span></span><br><span class="line">docker run -d --name redis \</span><br><span class="line">              -p 6378:6379 \ </span><br><span class="line">              redis:latest \</span><br><span class="line">              redis-server --appendonly yes --requirepass <span class="string">"your_pass"</span></span><br></pre></td></tr></table></figure></p></li>
+<li><p>开<code>mysql</code>文件映射</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run --name=mysql \</span><br><span class="line">            -v ~/docker/mysql/data:/var/lib/mysql \</span><br><span class="line">            -e MYSQL_ROOT_HOST=% -p 3306:3306 \</span><br><span class="line">            -d mysql/mysql-server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看密码</span></span><br><span class="line">docker logs mysql1 2&gt;&amp;1 | grep GENERATED</span><br><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line">docker <span class="built_in">exec</span> -it mysql mysql -uroot -p</span><br><span class="line"><span class="comment"># 修改密码</span></span><br><span class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'password'</span>;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>定时备份数据库</p></li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a class="next" href="/tutorial/hexo-theme-theory/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '1ad726ece750d0552748',     
+    clientSecret: '6917691391883046d263b52a7107fab68e457194',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'achjqz',     
+    admin: 'achjqz',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-117536047-1');</script></body></html>
