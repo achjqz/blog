@@ -12,23 +12,95 @@
 <p><code>scripts</code> 页面所需的js</p>
 <h4 id="博客页面">博客页面</h4>
 <p>主页: 继承至<code>layout</code>布局, 包含三大部分</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">extends partial&#x2F;layout</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    include mixins&#x2F;post</span><br><span class="line">    +posts()</span><br><span class="line"></span><br><span class="line">block pagination</span><br><span class="line">    include mixins&#x2F;paginator</span><br><span class="line">    +home()</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial&#x2F;copyright</span><br></pre></td></tr></table></figure>
+<pre class="pug"><code>extends partial/layout
+
+block container
+    include mixins/post
+    +posts()
+
+block pagination
+    include mixins/paginator
+    +home()
+
+block copyright
+    include partial/copyright</code></pre>
 <p>其中<code>posts()</code>是混入的函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mixin posts()</span><br><span class="line">    ul.home.post-list</span><br><span class="line">        - page.posts.each(function (item) &#123;</span><br><span class="line">            li.post-list-item</span><br><span class="line">                article.post-block</span><br><span class="line">                    h2.post-title</span><br><span class="line">                        a.post-title-link(href&#x3D; url_for(item.path))</span><br><span class="line">                            !&#x3D; item.title</span><br><span class="line">                    +postInfo(item)</span><br><span class="line">                    .post-content</span><br><span class="line">                        !&#x3D; item.excerpt</span><br><span class="line">                    a.read-more(href&#x3D; url_for(item.path))!&#x3D; __(&#39;more&#39;)</span><br><span class="line">        - &#125;)</span><br><span class="line">mixin postInfo(item)</span><br><span class="line">    .post-info</span><br><span class="line">        !&#x3D; full_date(item.date, &#39;ll&#39;)</span><br><span class="line">        if (item.tags &amp;&amp; (is_home() || is_post())) </span><br><span class="line">            for tag in item.tags.toArray()</span><br><span class="line">                a.tag-title(href&#x3D;url_for(tag.path))</span><br><span class="line">                    !&#x3D; &#39;#&#39; + tag.name</span><br></pre></td></tr></table></figure>
+<pre class="pug"><code>mixin posts()
+    ul.home.post-list
+        - page.posts.each(function (item) {
+            li.post-list-item
+                article.post-block
+                    h2.post-title
+                        a.post-title-link(href= url_for(item.path))
+                            != item.title
+                    +postInfo(item)
+                    .post-content
+                        != item.excerpt
+                    a.read-more(href= url_for(item.path))!= __(&#39;more&#39;)
+        - })
+mixin postInfo(item)
+    .post-info
+        != full_date(item.date, &#39;ll&#39;)
+        if (item.tags &amp;&amp; (is_home() || is_post())) 
+            for tag in item.tags.toArray()
+                a.tag-title(href=url_for(tag.path))
+                    != &#39;#&#39; + tag.name        </code></pre>
 <blockquote>
 <p>如果想修改, 比如给文章加上tag, 就可以自行在<code>postInfo</code>函数中加入对应的标签</p>
 </blockquote>
 <p>文章页: 和<code>index</code>页面基本一样, 但多了标题和描述block的覆盖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">extends partial&#x2F;layout</span><br><span class="line"></span><br><span class="line">block site_title</span><br><span class="line">    !&#x3D; page.title + &quot; · &quot; + config.title</span><br><span class="line"></span><br><span class="line">block description</span><br><span class="line">    - var desc &#x3D; page.desc || page.title + &#39; - &#39; + config.author;</span><br><span class="line">    meta(name&#x3D;&quot;description&quot;, content&#x3D;desc)</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    include mixins&#x2F;post</span><br><span class="line">    +post(page)</span><br><span class="line"></span><br><span class="line">block pagination</span><br><span class="line">    include mixins&#x2F;paginator</span><br><span class="line">    +post()</span><br><span class="line">    include partial&#x2F;comment</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial&#x2F;copyright</span><br></pre></td></tr></table></figure>
+<pre class="pug"><code>extends partial/layout
+
+block site_title
+    != page.title + &quot; · &quot; + config.title
+
+block description
+    - var desc = page.desc || page.title + &#39; - &#39; + config.author;
+    meta(name=&quot;description&quot;, content=desc)
+
+block container
+    include mixins/post
+    +post(page)
+
+block pagination
+    include mixins/paginator
+    +post()
+    include partial/comment
+
+block copyright
+    include partial/copyright</code></pre>
 <p>自定义页面: 需要在<code>block container</code>中判断页面类型实现不同的内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extends partial&#x2F;layout</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    if page.type &#x3D;&#x3D;&#x3D; &#39;category&#39;</span><br><span class="line">      .category  </span><br><span class="line">          h2.title </span><br><span class="line">              !&#x3D; page.title</span><br><span class="line">          !&#x3D; list_categories()</span><br><span class="line">    else if page.type &#x3D;&#x3D;&#x3D; &#39;friends&#39;</span><br><span class="line">      .flink</span><br><span class="line">        if site.data.link</span><br><span class="line">           ...</span><br><span class="line">block pagination</span><br><span class="line">    include mixins&#x2F;paginator</span><br><span class="line">    +home()</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial&#x2F;copyright</span><br></pre></td></tr></table></figure>
+<pre class="pug"><code>extends partial/layout
+
+block container
+    if page.type === &#39;category&#39;
+      .category  
+          h2.title 
+              != page.title
+          != list_categories()
+    else if page.type === &#39;friends&#39;
+      .flink
+        if site.data.link
+           ...
+block pagination
+    include mixins/paginator
+    +home()
+
+block copyright
+    include partial/copyright</code></pre>
 <blockquote>
 <p>我这里使用<code>page.type</code>判断页面类型, 这样需要在对应页面<code>index.md</code>中添加<code>type</code>变量</p>
 </blockquote>
 <h3 id="样式修改">样式修改</h3>
 <h4 id="根样式">根样式</h4>
 <p>定义一个根样式, <code>gulp</code>只编译这个文件, 更方便管理, 其他样式通过<code>@import</code>引入</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@charset</span> <span class="string">"utf-8"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@import</span> <span class="string">"_partial/normalize"</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">"_partial/base"</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">"_partial/header"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@import</span> url(<span class="string">'https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap'</span>);</span><br></pre></td></tr></table></figure>
+<pre class="scss"><code>@charset &quot;utf-8&quot;;
+
+@import &quot;_partial/normalize&quot;;
+@import &quot;_partial/base&quot;;
+@import &quot;_partial/header&quot;;
+
+@import url(&#39;https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&#39;);</code></pre>
 <h4 id="部分样式">部分样式</h4>
 <p>根据每个部分布局定义部分样式, 再在根样式中引入</p>
 <p>在命令行中运行<code>gulp</code>命令即可监控样式的更改, 实时编译</p>
@@ -46,7 +118,7 @@
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>

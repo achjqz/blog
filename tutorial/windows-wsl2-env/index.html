@@ -30,19 +30,22 @@
 </ol>
 <h4 id="windows-terminal配置">Windows Terminal配置</h4>
 <ol type="1">
-<li>主题配置 这里贴一份我自己的配置, 有需要的可以<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/profiles.json" target="_blank" rel="noopener">下载</a>修改 <img src="https://pic.rmb.bdstatic.com/3a62a32f090a8aed6fb9caa0af0019eb.png" alt="windows-terminal" /></li>
+<li>主题配置 这里贴一份我自己的配置, 有需要的可以<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/settings.json" target="_blank" rel="noopener">下载</a>修改 <img src="https://pic.rmb.bdstatic.com/3a62a32f090a8aed6fb9caa0af0019eb.png" alt="windows-terminal" /></li>
 <li>右键-在此文件夹中打开 这个功能需要添加注册表, 有需要可以<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/right.reg" target="_blank" rel="noopener">下载</a>, 运行</li>
 </ol>
 <h4 id="wsl2简单配置">wsl2简单配置</h4>
 <ol type="1">
 <li><p>使用<code>zsh</code>作为默认<code>bash</code>(可选, 这里不做过多介绍)</p></li>
 <li><p>当使用<code>Windows Search</code> 打开<code>Windows Terminal</code>时, 默认进入用户目录<code>~</code></p>
-<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ <span class="string">"<span class="variable">$(pwd)</span>"</span> == *<span class="string">"Windows"</span>* ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">cd</span> ~</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">if [[</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">&quot;</span> <span class="ot">==</span> *<span class="st">&quot;Windows&quot;</span>*<span class="kw"> ]]</span> ; <span class="kw">then</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="bu">cd</span> ~</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">fi</span></span></code></pre></div>
 <blockquote>
 <p>由于我使用了oh-my-zsh, 每次安装会覆盖原有的.zshrc, 所以我的所有关于bash配置都写在~/.profile下, 并在.zshrc中使用source .profile加载</p>
 </blockquote></li>
 <li><p>配置默认使用<code>vim</code>作为可视化编辑器</p>
-<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VISUAL=vim</span><br><span class="line"><span class="built_in">export</span> EDITOR=<span class="string">"<span class="variable">$VISUAL</span>"</span></span><br></pre></td></tr></table></figure></p></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">export</span> <span class="va">VISUAL=</span>vim</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">export</span> <span class="va">EDITOR=</span><span class="st">&quot;</span><span class="va">$VISUAL</span><span class="st">&quot;</span></span></code></pre></div></li>
 </ol>
 <h4 id="wsl2代理设置">wsl2代理设置</h4>
 <p><code>wsl2</code>采用的网络模式是<code>Nat</code>模式, 在<code>wsl2</code>中如果想使用<code>Windows</code>下的代理会比较麻烦, 不能直接通过<code>localhost</code>访问</p>
@@ -50,11 +53,17 @@
 <p>但Windows却可以使用localhost访问wsl2中的服务, 很便于程序的调试</p>
 </blockquote>
 <p>首先需要安装<code>proxychains4</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install proxychains4</span><br></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sudo</span> apt install proxychains4</span></code></pre></div>
 <p>复制一份配置文件到用户目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/proxychains4.conf ~/.proxychains.conf</span><br></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">sudo</span> cp /etc/proxychains4.conf ~/.proxychains.conf</span></code></pre></div>
 <p>配置bash设置(.profile中)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到windows ip</span></span><br><span class="line"><span class="built_in">export</span> WIN_IP=`cat /etc/resolv.conf | grep nameserver | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"><span class="comment"># 删除原有socks5配置</span></span><br><span class="line">sed -i <span class="string">'/socks5/d'</span> ~/.proxychains.conf</span><br><span class="line"><span class="comment"># 添加新的socks5配置</span></span><br><span class="line">sed -i <span class="string">'$a socks5 '</span><span class="variable">$&#123;WIN_IP&#125;</span><span class="string">' 7891'</span> ~/.proxychains.conf</span><br><span class="line"><span class="built_in">alias</span> pc=<span class="string">'proxychains4 -q -f ~/.proxychains.conf'</span></span><br></pre></td></tr></table></figure>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># 找到windows ip</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="bu">export</span> <span class="va">WIN_IP=</span><span class="kw">`</span><span class="fu">cat</span> /etc/resolv.conf <span class="kw">|</span> <span class="fu">grep</span> nameserver <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span><span class="kw">`</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># 删除原有socks5配置</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">sed</span> -i <span class="st">&#39;/socks5/d&#39;</span> ~/.proxychains.conf</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># 添加新的socks5配置</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">sed</span> -i <span class="st">&#39;$a socks5 &#39;</span><span class="va">${WIN_IP}</span><span class="st">&#39; 7891&#39;</span> ~/.proxychains.conf</span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="bu">alias</span> pc=<span class="st">&#39;proxychains4 -q -f ~/.proxychains.conf&#39;</span></span></code></pre></div>
 <p>这样每次启动都会寻找正确的ip地址, 并设置好给<code>proxychains4</code></p>
 <h4 id="vscode设置">vscode设置</h4>
 <p>还是由于网络问题, <code>remote server</code>继承了主<code>vscode</code>的配置, 代理会默认被设为<code>127.0.0.1:7890</code>, 会出现无法下载插件, 或无法使用插件等问题</p>
@@ -77,7 +86,7 @@
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>
