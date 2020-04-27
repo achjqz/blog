@@ -48,7 +48,7 @@ desc: '自Windows Terminal发布后一直用得很爽, 我也一直在关注着�
 #### Windows Terminal配置
 
 1. 主题配置 这里贴一份我自己的配置, 有需要的可以[下载](
-https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/profiles.json)修改
+https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/settings.json)修改
     ![windows-terminal](https://pic.rmb.bdstatic.com/3a62a32f090a8aed6fb9caa0af0019eb.png)
 2. 右键-在此文件夹中打开 这个功能需要添加注册表, 有需要可以[下载](
 https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/right.reg), 运行
