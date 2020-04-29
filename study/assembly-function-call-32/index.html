@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 汇编入门-x86和x86_64函数调用对比-32位篇 · 潇晗宇浩的博客</title><meta name="description" content="上一篇中讲了64位程序函数的调用情况, 这一篇我们来看32位程序的调用规则, 如果还没有看过上一篇的, 先阅读完上篇再读本文"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">汇编入门-x86和x86_64函数调用对比-32位篇</h1><div class="post-info">Apr 29, 2020<a class="tag-title" href="/tags/assembly/">#assembly</a><a class="tag-title" href="/tags/os/">#os</a></div><div class="post-content"><p>上一篇中讲了64位程序函数的调用情况, 这一篇我们来看32位程序的调用规则, 如果还没有看过上一篇的, 先阅读完上篇再读本文</p>
+<a id="more"></a>
+<h3 id="x86程序分析">x86程序分析</h3>
+<blockquote>
+<p>默认gcc编译成64位程序, 加上-m32参数可编译为32位程序</p>
+</blockquote>
+<h4 id="og优化级别下">-Og优化级别下</h4>
+<p>首先看<code>add</code>函数</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1"></a>subl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>/* 栈保护代码</span>
+<span id="cb1-3"><a href="#cb1-3"></a>movl<span class="bn">    $20, </span>%<span class="kw">edx</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>movl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">eax</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>movl    %<span class="kw">eax</span>, <span class="dv">44</span>(%<span class="kw">esp</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>*/</span>
+<span id="cb1-7"><a href="#cb1-7"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>movl    <span class="dv">68</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // a</span>
+<span id="cb1-9"><a href="#cb1-9"></a>addl    <span class="dv">64</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // b</span>
+<span id="cb1-10"><a href="#cb1-10"></a>addl    <span class="dv">12</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // array[<span class="dv">2</span>]</span>
+<span id="cb1-11"><a href="#cb1-11"></a>addl    <span class="dv">8</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
+<span id="cb1-12"><a href="#cb1-12"></a>/* 栈保护代码</span>
+<span id="cb1-13"><a href="#cb1-13"></a>movl    <span class="dv">44</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>xorl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">ecx</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="bu">jne</span> .L4</span>
+<span id="cb1-16"><a href="#cb1-16"></a>*/</span>
+<span id="cb1-17"><a href="#cb1-17"></a>addl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="bu">ret</span></span></code></pre></div>
+<p>可以看出和64位程序差别不大, 只是在获取参数的时候使用了栈上的值而不是寄存器</p>
+<p>再看<code>main</code>函数</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>pushl   %<span class="kw">esi</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>pushl   %<span class="kw">ebx</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>pushl   %<span class="kw">ecx</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a>subl<span class="bn">    $36, </span>%<span class="kw">esp</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>movl<span class="bn">    $4, </span><span class="dv">-40</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a>movl<span class="bn">    $5, </span><span class="dv">-36</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>movl<span class="bn">    $6, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>pushl<span class="bn">   $8</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>pushl<span class="bn">   $7</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>addl<span class="bn">    $12, </span>%<span class="kw">esp</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>pushl<span class="bn">   $1</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="bu">call</span>    __printf_chk@PLT</span>
+<span id="cb2-24"><a href="#cb2-24"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span></code></pre></div>
+<p><code>main</code>函数前面一段多了很多奇怪的指令, <code>ebp</code>这一套上一篇已经说过了, 这里即使开启了优化也保留了<code>ebp</code></p>
+<p>而后面几条<code>pushl</code>保存了几个寄存器的值, 属于<code>Callee Saved</code>, 函数运行结束时会<code>popl</code>还原</p>
+<p>前三条命令有点迷惑, 查了下资料看到了一些解释</p>
+<p><code>leal 4(%esp), %ecx</code> 将<code>main</code>函数第一个参数放入寄存器<code>ecx</code>中, 便于后面访问</p>
+<p><code>andl $-16, %esp</code> 将<code>esp</code>地址与16字节对齐(<code>-16 = 0xfffffff0</code>)</p>
+<p><code>pushl  -4(%ecx)</code> 存储函数的返回地址, 暂不知道作用</p>
+<p>后面调用函数时并没有将参数压入寄存器, 而是使用<code>push</code>命令压栈, 函数调用结束后使用<code>add</code>命令释放, 这点和64位下多参数情况一致</p>
+<h4 id="无优化下">无优化下</h4>
+<p><code>add</code>函数</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>subl<span class="bn">    $56, </span>%<span class="kw">esp</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>movl    <span class="dv">8</span>(%<span class="kw">ebp</span>), %<span class="kw">edx</span>    // a</span>
+<span id="cb3-6"><a href="#cb3-6"></a>movl    <span class="dv">12</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>   // b</span>
+<span id="cb3-7"><a href="#cb3-7"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>movl    <span class="dv">-44</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">2</span>]</span>
+<span id="cb3-9"><a href="#cb3-9"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>movl    <span class="dv">-48</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
+<span id="cb3-11"><a href="#cb3-11"></a>addl    %<span class="kw">edx</span>, %<span class="kw">eax</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>movl    <span class="dv">-12</span>(%<span class="kw">ebp</span>), %<span class="kw">ecx</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="bu">leave</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="bu">ret</span></span></code></pre></div>
+<p>可以看出仅仅是使用了<code>ebp</code></p>
+<p>再看<code>main</code>函数</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>pushl   %<span class="kw">ebx</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>pushl   %<span class="kw">ecx</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>subl<span class="bn">    $32, </span>%<span class="kw">esp</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>movl<span class="bn">    $4, </span><span class="dv">-24</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-11"><a href="#cb4-11"></a>movl<span class="bn">    $5, </span><span class="dv">-20</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>movl<span class="bn">    $6, </span><span class="dv">-16</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-13"><a href="#cb4-13"></a>movl<span class="bn">    $7, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>movl<span class="bn">    $8, </span><span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-15"><a href="#cb4-15"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>pushl   <span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-17"><a href="#cb4-17"></a>pushl   <span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="bu">call</span>    printf@PLT</span></code></pre></div>
+<p>可以看到<code>main</code>函数和优化过的没有大的区别, 只是<code>printf</code>并没有被优化</p>
+<h3 id="总结">总结</h3>
+<p>总的分析下来, 64位程序和32位程序差别不大, 仅是参数传递的差异, 而当64位参数过多时, 也会采用32位压栈的方式传参</p>
+<p>而不同优化级别下, 最大的差别就是使用<code>rsp</code>作为函数基地址还是<code>rbp</code>作为函数基地址</p>
+</div></article></div></main><footer><div class="paginator"><a class="next" href="/study/assembly-function-call-64/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '1ad726ece750d0552748',     
+    clientSecret: '6917691391883046d263b52a7107fab68e457194',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'achjqz',     
+    admin: 'achjqz',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-117536047-1');</script></body></html>
