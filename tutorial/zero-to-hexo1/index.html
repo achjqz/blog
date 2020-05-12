@@ -5,17 +5,17 @@
 <h4 id="工具介绍及安装">工具介绍及安装</h4>
 <ol type="1">
 <li><code>Git</code> 版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a href="https://git-scm.com/" target="_blank" rel="noopener">官网安装</a></li>
-<li><code>node.js</code> 为hexo提供JavaScript环境 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">官网安装</a></li>
+<li><code>node.js</code> 为hexo提供JavaScript环境 <a href="https://nodejs.org/" target="_blank" rel="noopener">官网安装</a></li>
 <li><code>Github Pages</code> Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装</li>
 </ol>
 <h4 id="hexo和主题安装">hexo和主题安装</h4>
 <blockquote>
-<p>hexo 和 hexo 主题的关系<br />
+<p>hexo 和 hexo 主题的关系:<br />
 hexo 主题定义了博客的界面布局, 颜色, 脚本等<br />
 hexo 将内容交给hexo 主题生成对应的排版</p>
 </blockquote>
 <ol type="1">
-<li><p>hexo 安装 <a href="https:/hexo.io/" target="_blank" rel="noopener">官方文档</a></p>
+<li><p>hexo 安装 <a href="https://hexo.io/" target="_blank" rel="noopener">官方文档</a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">npm</span> install hexo-cli -g</span></code></pre></div></li>
 <li><p>生成默认博客</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">hexo</span> init blog</span>
@@ -27,8 +27,8 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <span id="cb3-2"><a href="#cb3-2"></a> hexo-generator-feed \</span>
 <span id="cb3-3"><a href="#cb3-3"></a> hexo-generator-sitemap <span class="dt">\ </span></span>
 <span id="cb3-4"><a href="#cb3-4"></a> <span class="ex">hexo-browsersync</span>  \</span>
-<span id="cb3-5"><a href="#cb3-5"></a> hexo-generator-archive \</span>
-<span id="cb3-6"><a href="#cb3-6"></a>git clone https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span></code></pre></div></li>
+<span id="cb3-5"><a href="#cb3-5"></a> hexo-generator-archive </span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">git</span> clone https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span></code></pre></div></li>
 </ol>
 <h4 id="博客配置">博客配置</h4>
 <p>博客的配置主要都在<code>_config.yml</code>中</p>
@@ -49,6 +49,9 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="co">    clientID: 1ad726ece750d0552748</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a><span class="co">    clientSecret: 6917691391883046d263b52a7107fab68e457194</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a><span class="co">...</span></span></code></pre></div></li>
+</ol>
+<p>更多配置请查看<a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank" rel="noopener">apollo</a>仓库</p>
+<ol start="2" type="1">
 <li><p>博客url配置</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> http://blog.xhyh.best</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">root</span><span class="kw">:</span><span class="at"> /</span></span>

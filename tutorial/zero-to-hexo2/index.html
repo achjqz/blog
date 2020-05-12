@@ -54,10 +54,10 @@
 <span id="cb2-42"><a href="#cb2-42"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy 🚀</span></span>
 <span id="cb2-43"><a href="#cb2-43"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> JamesIves/github-pages-deploy-action@releases/v3</span></span>
 <span id="cb2-44"><a href="#cb2-44"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb2-45"><a href="#cb2-45"></a><span class="fu">        ACCESS_TOKEN</span><span class="kw">: </span><span class="at">$&lt;!--￼0--</span><span class="ch">&gt;</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a><span class="at">        </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${ { secrets.ACCESS_TOKEN } }</span><span class="co"> # 删除大括号中间空格</span></span>
 <span id="cb2-46"><a href="#cb2-46"></a><span class="at">        </span><span class="fu">BRANCH</span><span class="kw">:</span><span class="at"> gh-pages</span><span class="co"> # The branch the action should deploy to.</span></span>
 <span id="cb2-47"><a href="#cb2-47"></a><span class="at">        </span><span class="fu">FOLDER</span><span class="kw">:</span><span class="at"> public</span><span class="co"> # The folder the action should deploy.</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a><span class="fu">        COMMIT_MESSAGE</span><span class="kw">: </span><span class="at">$&lt;!--￼1--</span><span class="ch">&gt;</span></span></code></pre></div></li>
+<span id="cb2-48"><a href="#cb2-48"></a><span class="at">        </span><span class="fu">COMMIT_MESSAGE</span><span class="kw">:</span><span class="at"> ${ { github.event.head_commit.message } }</span><span class="co"> # 删除大括号中间空格</span></span></code></pre></div></li>
 <li><p>流程介绍</p>
 <p>根据上面的配置可以看到主要分为4步</p>
 <ul>
