@@ -28,7 +28,11 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <span id="cb3-3"><a href="#cb3-3"></a> hexo-generator-sitemap <span class="dt">\ </span></span>
 <span id="cb3-4"><a href="#cb3-4"></a> <span class="ex">hexo-browsersync</span>  \</span>
 <span id="cb3-5"><a href="#cb3-5"></a> hexo-generator-archive </span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">git</span> clone https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span></code></pre></div></li>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># 将主题添加为子模块, clone博客仓库时需加 --recursive 参数拉取所有子模块</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">git</span> submodule add https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span></code></pre></div>
+<blockquote>
+<p>若使用git clone拉取主题, 则需要删除themes/apollo/.git文件才能使git正常追踪apollo内的文件</p>
+</blockquote></li>
 </ol>
 <h4 id="博客配置">博客配置</h4>
 <p>博客的配置主要都在<code>_config.yml</code>中</p>
