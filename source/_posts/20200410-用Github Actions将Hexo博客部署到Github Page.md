@@ -81,6 +81,7 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
            FOLDER: public # The folder the action should deploy.
            COMMIT_MESSAGE: ${ { github.event.head_commit.message } } # 删除大括号中间空格
    ```
+  最新版可以查看[我的配置](https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml)
 
 3. 流程介绍
 
@@ -100,6 +101,13 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 
 具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.best/tutorial/linux-ssh/), 只用完成第一部分ssh生成
 
+#### 将公钥添加到Github
+
+在`push`到Github时需要验证身份, 添加ssh公钥到Github, 本地使用私钥验证便有权限操控仓库
+
+在Github账号设置中添加`ssh/id_rsa.pub`文件中的内容
+![ssh](https://pic.rmb.bdstatic.com/6b5c9c8d97447ab0aad3da6af5439897.png)
+
 #### 生成ACCESS_SECRET
 
 有了ACCESS_SECRET, `Github Actions` 才有权限写入仓库
@@ -108,13 +116,14 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 ![token](https://pic.rmb.bdstatic.com/3e96456f3136c30e6daee91f21d00176.png)
 
 至少必须给`read, write repo`的权限
+保存好生成的一串数字字母
 
 #### 在Github上新建仓库
 
 1. 进入[新建仓库页面](https://github.com/new)
 2. 新建一个仓库, public和private均可, 但推荐public, 否则Github Page需要另外新建一个仓库
    ![new repo](https://pic.rmb.bdstatic.com/245f3c54feac8e15db0dae57ff18533c.png)
-3. 在项目设置中添加ACCESS_SECRET
+3. 在项目设置中添加`ACCESS_SECRET`, Value就是上面生成好的token
    ![secret](https://pic.rmb.bdstatic.com/5b364db983b09727ee07df2a9dc54a99.png)
 4. 根据提示push项目
 
