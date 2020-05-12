@@ -76,10 +76,10 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
        - name: Deploy 🚀
          uses: JamesIves/github-pages-deploy-action@releases/v3
          with:
-           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+           ACCESS_TOKEN: ${ { secrets.ACCESS_TOKEN } } # 删除大括号中间空格
            BRANCH: gh-pages # The branch the action should deploy to.
            FOLDER: public # The folder the action should deploy.
-           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+           COMMIT_MESSAGE: ${ { github.event.head_commit.message } } # 删除大括号中间空格
    ```
 
 3. 流程介绍
