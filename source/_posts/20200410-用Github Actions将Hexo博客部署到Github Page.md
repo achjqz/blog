@@ -20,12 +20,12 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 
 1. 新建workflow文件
    
-   只有当项目中`.github/workflow`目录下存在以`.yml`结尾的配置才会触发`Github Actions`
+   只有当项目中`.github/workflows`目录下存在以`.yml`结尾的配置才会触发`Github Actions`
    
    ``` bash
    cd Blog
-   mkdir -p .github/workflow
-   touch .github/workflow/deploy.yml 
+   mkdir -p .github/workflows
+   touch .github/workflows/deploy.yml 
    ```
 
    
