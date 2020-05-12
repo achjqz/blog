@@ -38,18 +38,9 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co"># 修改主题名称</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">theme: apollo</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co">theme_config: </span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">  # google analyse 配置</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">  ga: UA-117536047-1</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">  # 评论区配置</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">  gitalk:</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">    on: true</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">    owner: achjqz</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">    repo: blog</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">    admin: [&#39;achjqz&#39;]</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">    clientID: 1ad726ece750d0552748</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">    clientSecret: 6917691391883046d263b52a7107fab68e457194</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">...</span></span></code></pre></div>
-<p>更多配置说明请查看<a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank" rel="noopener">apollo</a>仓库和参考<a href="https://github.com/achjqz/blog/blob/master/_config.yml" target="_blank" rel="noopener">我的配置</a></p></li>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">   #评论区等配置, 按需添加</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">...</span></span></code></pre></div>
+<p>更多配置说明请查看<a href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md" target="_blank" rel="noopener">apollo</a>文档和参考<a href="https://github.com/achjqz/blog/blob/master/_config.yml" target="_blank" rel="noopener">我的配置</a></p></li>
 <li><p>博客url配置</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> http://blog.xhyh.best</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">root</span><span class="kw">:</span><span class="at"> /</span></span>
@@ -64,7 +55,7 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <ol type="1">
 <li><code>hexo clean</code> 清除缓存和生成的public文件夹</li>
 <li><code>hexo g</code> generator 生成public文件</li>
-<li><code>hexo s</code> server 本地预览, 加参数<code>--debug</code>可查看具体信息</li>
+<li><code>hexo s</code> server 本地预览, 加参数<code>--debug</code>可查看调试信息</li>
 <li><code>hexo d</code> deploy 部署到github</li>
 </ol>
 <h4 id="增加categorytag页面">增加category/tag页面</h4>
