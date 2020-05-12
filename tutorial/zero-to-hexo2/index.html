@@ -5,10 +5,10 @@
 <p><code>Github Actions</code> 是 Github 推出的一款持续集成工具, 这里我们可以用来发布博客到<code>Github Page</code></p>
 <ol type="1">
 <li><p>新建workflow文件</p>
-<p>只有当项目中<code>.github/workflow</code>目录下存在以<code>.yml</code>结尾的配置才会触发<code>Github Actions</code></p>
+<p>只有当项目中<code>.github/workflows</code>目录下存在以<code>.yml</code>结尾的配置才会触发<code>Github Actions</code></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="bu">cd</span> Blog</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">mkdir</span> -p .github/workflow</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">touch</span> .github/workflow/deploy.yml </span></code></pre></div></li>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">mkdir</span> -p .github/workflows</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">touch</span> .github/workflows/deploy.yml </span></code></pre></div></li>
 <li><p>配置<code>deploy.yml</code>文件</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># workflow name</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy To Github Pages</span></span>
