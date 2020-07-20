@@ -22,42 +22,42 @@
 <p>本文主要分析不优化和<code>-Og</code>两种情况</p>
 <h4 id="源代码">源代码</h4>
 <p>为了简便, 下面分析将采用以下源代码</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="dt">int</span> add(<span class="dt">int</span> a, <span class="dt">int</span> b) {</span>
-<span id="cb1-4"><a href="#cb1-4"></a>    <span class="dt">int</span> array[<span class="dv">10</span>];</span>
-<span id="cb1-5"><a href="#cb1-5"></a>    <span class="cf">return</span> a + b  + array[<span class="dv">2</span>] + array[<span class="dv">1</span>];</span>
-<span id="cb1-6"><a href="#cb1-6"></a>}</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="dt">int</span> main() {</span>
-<span id="cb1-9"><a href="#cb1-9"></a>    <span class="dt">int</span> array[] = {<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>};</span>
-<span id="cb1-10"><a href="#cb1-10"></a>    <span class="dt">int</span> a = <span class="dv">7</span>, b = <span class="dv">8</span>;</span>
-<span id="cb1-11"><a href="#cb1-11"></a>    printf(<span class="st">&quot;sum: %d</span><span class="sc">\n</span><span class="st">&quot;</span>, add(a, b));</span>
-<span id="cb1-12"><a href="#cb1-12"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">3</span>; i++) {</span>
-<span id="cb1-13"><a href="#cb1-13"></a>        printf(<span class="st">&quot;%d &quot;</span>, array[i]);</span>
-<span id="cb1-14"><a href="#cb1-14"></a>    }</span>
-<span id="cb1-15"><a href="#cb1-15"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">int</span> add(<span class="dt">int</span> a, <span class="dt">int</span> b) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>    <span class="dt">int</span> array[<span class="dv">10</span>];</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    <span class="cf">return</span> a + b  + array[<span class="dv">2</span>] + array[<span class="dv">1</span>];</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="dt">int</span> main() {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>    <span class="dt">int</span> array[] = {<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>};</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    <span class="dt">int</span> a = <span class="dv">7</span>, b = <span class="dv">8</span>;</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    printf(<span class="st">&quot;sum: %d</span><span class="sc">\n</span><span class="st">&quot;</span>, add(a, b));</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">3</span>; i++) {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>        printf(<span class="st">&quot;%d &quot;</span>, array[i]);</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>    }</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>}</span></code></pre></div>
 <h3 id="x86_64程序分析">x86_64程序分析</h3>
 <h4 id="og优化级别下">-Og优化级别下</h4>
 <p>首先看<code>add</code>函数的汇编代码(已省去无关指令)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1"></a>subq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>/* 栈保护代码</span>
-<span id="cb2-3"><a href="#cb2-3"></a>movl<span class="bn">    $40, </span>%<span class="kw">edx</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="bu">movq</span>    %<span class="kw">fs</span>:(%<span class="kw">rdx</span>), %<span class="kw">rax</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="bu">movq</span>    %<span class="kw">rax</span>, <span class="dv">40</span>(%<span class="kw">rsp</span>)</span>
-<span id="cb2-6"><a href="#cb2-6"></a>*/</span>
-<span id="cb2-7"><a href="#cb2-7"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>addl    %<span class="kw">esi</span>, %<span class="kw">edi</span>      // a + b</span>
-<span id="cb2-9"><a href="#cb2-9"></a>addl    <span class="dv">8</span>(%<span class="kw">rsp</span>), %<span class="kw">edi</span>   // array[<span class="dv">2</span>]</span>
-<span id="cb2-10"><a href="#cb2-10"></a>movl    %<span class="kw">edi</span>, %<span class="kw">eax</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>addl    <span class="dv">4</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span>   // array[<span class="dv">1</span>]</span>
-<span id="cb2-12"><a href="#cb2-12"></a>/* 栈保护代码</span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="bu">movq</span>    <span class="dv">40</span>(%<span class="kw">rsp</span>), %<span class="kw">rcx</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>xorq    %<span class="kw">fs</span>:(%<span class="kw">rdx</span>), %<span class="kw">rcx</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="bu">jne</span> .L4</span>
-<span id="cb2-16"><a href="#cb2-16"></a>*/</span>
-<span id="cb2-17"><a href="#cb2-17"></a>addq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="bu">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>subq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>/* 栈保护代码</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>movl<span class="bn">    $40, </span>%<span class="kw">edx</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">fs</span>:(%<span class="kw">rdx</span>), %<span class="kw">rax</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">rax</span>, <span class="dv">40</span>(%<span class="kw">rsp</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>*/</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>addl    %<span class="kw">esi</span>, %<span class="kw">edi</span>      // a + b</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>addl    <span class="dv">8</span>(%<span class="kw">rsp</span>), %<span class="kw">edi</span>   // array[<span class="dv">2</span>]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>movl    %<span class="kw">edi</span>, %<span class="kw">eax</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>addl    <span class="dv">4</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span>   // array[<span class="dv">1</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>/* 栈保护代码</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="bu">movq</span>    <span class="dv">40</span>(%<span class="kw">rsp</span>), %<span class="kw">rcx</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>xorq    %<span class="kw">fs</span>:(%<span class="kw">rdx</span>), %<span class="kw">rcx</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="bu">jne</span> .L4</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>*/</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>addq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="bu">ret</span></span></code></pre></div>
 <blockquote>
 <p>可以看到函数中存在栈保护代码, 这里暂且不说, 与函数调用关系不大, 后面的代码中将省略</p>
 </blockquote>
@@ -67,93 +67,93 @@
 <p>函数的参数依次存放在<code>edi</code>, <code>esi</code> 寄存器中, 使用<code>add</code>指令累加</p>
 <p>最后将栈指针上移56字节, 回到调用函数前的状态</p>
 <p>再看<code>main</code>函数</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1"></a>pushq   %<span class="kw">rbx</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>subq<span class="bn">    $32, </span>%<span class="kw">rsp</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>movl<span class="bn">    $4, </span><span class="dv">12</span>(%<span class="kw">rsp</span>)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>movl<span class="bn">    $5, </span><span class="dv">16</span>(%<span class="kw">rsp</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>movl<span class="bn">    $6, </span><span class="dv">20</span>(%<span class="kw">rsp</span>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>movl<span class="bn">    $8, </span>%<span class="kw">esi</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>movl<span class="bn">    $7, </span>%<span class="kw">edi</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="bu">call</span>    <span class="bu">add</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>movl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>leaq    .LC0(%rip), %<span class="kw">rsi</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>movl<span class="bn">    $1, </span>%<span class="kw">edi</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>movl<span class="bn">    $0, </span>%<span class="kw">eax</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="bu">call</span>    __printf_chk@PLT</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>pushq   %<span class="kw">rbx</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>subq<span class="bn">    $32, </span>%<span class="kw">rsp</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>movl<span class="bn">    $4, </span><span class="dv">12</span>(%<span class="kw">rsp</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>movl<span class="bn">    $5, </span><span class="dv">16</span>(%<span class="kw">rsp</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>movl<span class="bn">    $6, </span><span class="dv">20</span>(%<span class="kw">rsp</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>movl<span class="bn">    $8, </span>%<span class="kw">esi</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>movl<span class="bn">    $7, </span>%<span class="kw">edi</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>movl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>leaq    .LC0(%rip), %<span class="kw">rsi</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>movl<span class="bn">    $1, </span>%<span class="kw">edi</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>movl<span class="bn">    $0, </span>%<span class="kw">eax</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="bu">call</span>    __printf_chk@PLT</span></code></pre></div>
 <p>除了一开始在栈上保存了<code>rbx</code>以外, 其它步骤基本和<code>add</code>函数一致, 也可以看到函数传参的过程(<code>mov</code>到相应寄存器)</p>
 <blockquote>
 <p>注意这里编译器自动优化, 将printf转换成了更安全的__printf_chk(int flag, const char * format)函数, 所以会多一个参数flag</p>
 </blockquote>
 <h4 id="无优化下">无优化下</h4>
 <p>首先还是先看<code>add</code>函数</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1"></a>pushq   %<span class="kw">rbp</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="bu">movq</span>    %<span class="kw">rsp</span>, %<span class="kw">rbp</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>subq<span class="bn">    $64, </span>%<span class="kw">rsp</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>movl    %<span class="kw">edi</span>, <span class="dv">-52</span>(%<span class="kw">rbp</span>)</span>
-<span id="cb4-5"><a href="#cb4-5"></a>movl    %<span class="kw">esi</span>, <span class="dv">-56</span>(%<span class="kw">rbp</span>)</span>
-<span id="cb4-6"><a href="#cb4-6"></a>/* 栈保护</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="bu">movq</span>    %<span class="kw">fs</span>:<span class="dv">40</span>, %<span class="kw">rax</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="bu">movq</span>    %<span class="kw">rax</span>, <span class="dv">-8</span>(%<span class="kw">rbp</span>)</span>
-<span id="cb4-9"><a href="#cb4-9"></a>*/</span>
-<span id="cb4-10"><a href="#cb4-10"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>movl    <span class="dv">-52</span>(%<span class="kw">rbp</span>), %<span class="kw">edx</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>movl    <span class="dv">-56</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>movl    <span class="dv">-40</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>movl    <span class="dv">-44</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>addl    %<span class="kw">edx</span>, %<span class="kw">eax</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a>/* 栈保护</span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="bu">movq</span>    <span class="dv">-8</span>(%<span class="kw">rbp</span>), %<span class="kw">rcx</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a>xorq    %<span class="kw">fs</span>:<span class="dv">40</span>, %<span class="kw">rcx</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a>*/</span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="bu">leave</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="bu">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>pushq   %<span class="kw">rbp</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">rsp</span>, %<span class="kw">rbp</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>subq<span class="bn">    $64, </span>%<span class="kw">rsp</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>movl    %<span class="kw">edi</span>, <span class="dv">-52</span>(%<span class="kw">rbp</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>movl    %<span class="kw">esi</span>, <span class="dv">-56</span>(%<span class="kw">rbp</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>/* 栈保护</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">fs</span>:<span class="dv">40</span>, %<span class="kw">rax</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">rax</span>, <span class="dv">-8</span>(%<span class="kw">rbp</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>*/</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>movl    <span class="dv">-52</span>(%<span class="kw">rbp</span>), %<span class="kw">edx</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>movl    <span class="dv">-56</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>movl    <span class="dv">-40</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>movl    <span class="dv">-44</span>(%<span class="kw">rbp</span>), %<span class="kw">eax</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>addl    %<span class="kw">edx</span>, %<span class="kw">eax</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>/* 栈保护</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="bu">movq</span>    <span class="dv">-8</span>(%<span class="kw">rbp</span>), %<span class="kw">rcx</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>xorq    %<span class="kw">fs</span>:<span class="dv">40</span>, %<span class="kw">rcx</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>*/</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a><span class="bu">leave</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a><span class="bu">ret</span></span></code></pre></div>
 <p>与优化过的代码相比, 最大的变化就是使用了<code>rbp</code>寄存器</p>
 <p><code>rbp</code>存储当前函数的基地址, 一个正在执行的函数A, <code>rsp</code>是 A 的栈顶, <code>rbp</code> 是 A 的栈底 <img src="https://pic.rmb.bdstatic.com/d54c105690f8ff541982deae78df5457.png" alt="stack-frame" /></p>
 <p>函数调用规定了被调用者需存储调用者的<code>rbp</code>信息(Callee Saved), 并且在函数执行结束时恢复</p>
 <p>于是, 使用<code>rbp</code>这一套的模板大概如下</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb5-1"><a href="#cb5-1"></a>pushq   %<span class="kw">rbp</span> // 存储调用者的rbp</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="bu">movq</span>    %<span class="kw">rsp</span>, %<span class="kw">rbp</span> // 将rbp设置为当前函数的基地址</span>
-<span id="cb5-3"><a href="#cb5-3"></a>subq<span class="bn">    $64, </span>%<span class="kw">rsp</span> // 为局部变量预留空间</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a>... // 使用rbp作为内存寻址的基地址</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="bu">leave</span> // <span class="bu">mov</span> %<span class="kw">rbp</span>, %<span class="kw">rsp</span> 和 <span class="bu">pop</span> %<span class="kw">rbp</span> 指令的结合 </span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>pushq   %<span class="kw">rbp</span> // 存储调用者的rbp</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="bu">movq</span>    %<span class="kw">rsp</span>, %<span class="kw">rbp</span> // 将rbp设置为当前函数的基地址</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>subq<span class="bn">    $64, </span>%<span class="kw">rsp</span> // 为局部变量预留空间</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>... // 使用rbp作为内存寻址的基地址</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="bu">leave</span> // <span class="bu">mov</span> %<span class="kw">rbp</span>, %<span class="kw">rsp</span> 和 <span class="bu">pop</span> %<span class="kw">rbp</span> 指令的结合 </span></code></pre></div>
 <blockquote>
 <p>可以看到, 尽管使用rbp寻址, 但仍有subq $64, %rsp操作, 这是为了避免在调用函数时可能的push操作造成和局部变量数据冲突</p>
 </blockquote>
 <h4 id="多参数的情况">多参数的情况</h4>
 <p>在64位程序中, 函数的参数会依次存在<code>%rdi, %rsi, %rdx, %rcx, %r8, %r9</code>, 这6个寄存器中, 如果参数多于6个怎么处理呢? 下面看一个例子</p>
 <p>修改<code>add</code>函数接收7个参数</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">int</span> add(<span class="dt">int</span> a, <span class="dt">int</span> b, <span class="dt">int</span> c, <span class="dt">int</span> d, <span class="dt">int</span> e, <span class="dt">int</span> f, <span class="dt">int</span> g) {</span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="dt">int</span> array[<span class="dv">10</span>];</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="cf">return</span> a + b + c + d + e + f + g + array[<span class="dv">2</span>] + array[<span class="dv">1</span>];</span>
-<span id="cb6-4"><a href="#cb6-4"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">int</span> add(<span class="dt">int</span> a, <span class="dt">int</span> b, <span class="dt">int</span> c, <span class="dt">int</span> d, <span class="dt">int</span> e, <span class="dt">int</span> f, <span class="dt">int</span> g) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="dt">int</span> array[<span class="dv">10</span>];</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="cf">return</span> a + b + c + d + e + f + g + array[<span class="dv">2</span>] + array[<span class="dv">1</span>];</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span></code></pre></div>
 <p>对应的汇编代码为(-Og优化)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb7-1"><a href="#cb7-1"></a>// <span class="bu">add</span> 函数</span>
-<span id="cb7-2"><a href="#cb7-2"></a>subq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>addl    %<span class="kw">esi</span>, %<span class="kw">edi</span> //a + b</span>
-<span id="cb7-4"><a href="#cb7-4"></a>addl    %<span class="kw">edx</span>, %<span class="kw">edi</span> // c</span>
-<span id="cb7-5"><a href="#cb7-5"></a>addl    %<span class="kw">ecx</span>, %<span class="kw">edi</span> // d</span>
-<span id="cb7-6"><a href="#cb7-6"></a>addl    %r8d, %<span class="kw">edi</span> // e</span>
-<span id="cb7-7"><a href="#cb7-7"></a>addl    %r9d, %<span class="kw">edi</span> // f</span>
-<span id="cb7-8"><a href="#cb7-8"></a>movl    %<span class="kw">edi</span>, %<span class="kw">eax</span>  </span>
-<span id="cb7-9"><a href="#cb7-9"></a>addl    <span class="dv">64</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // g</span>
-<span id="cb7-10"><a href="#cb7-10"></a>addl    <span class="dv">8</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // array[<span class="dv">1</span>]</span>
-<span id="cb7-11"><a href="#cb7-11"></a>addl    <span class="dv">4</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // array[<span class="dv">0</span>]</span>
-<span id="cb7-12"><a href="#cb7-12"></a>addq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a></span>
-<span id="cb7-14"><a href="#cb7-14"></a>// main 函数</span>
-<span id="cb7-15"><a href="#cb7-15"></a>pushq<span class="bn">   $0       </span>// g</span>
-<span id="cb7-16"><a href="#cb7-16"></a>movl<span class="bn">    $0, </span>%r9d // f</span>
-<span id="cb7-17"><a href="#cb7-17"></a>movl<span class="bn">    $0, </span>%r8d // e</span>
-<span id="cb7-18"><a href="#cb7-18"></a>movl<span class="bn">    $0, </span>%<span class="kw">ecx</span> // d</span>
-<span id="cb7-19"><a href="#cb7-19"></a>movl<span class="bn">    $0, </span>%<span class="kw">edx</span> // c</span>
-<span id="cb7-20"><a href="#cb7-20"></a>movl<span class="bn">    $8, </span>%<span class="kw">esi</span> // b</span>
-<span id="cb7-21"><a href="#cb7-21"></a>movl<span class="bn">    $7, </span>%<span class="kw">edi</span> // a</span>
-<span id="cb7-22"><a href="#cb7-22"></a><span class="bu">call</span>    <span class="bu">add</span></span>
-<span id="cb7-23"><a href="#cb7-23"></a>addq<span class="bn">    $16, </span>%<span class="kw">rsp</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>// <span class="bu">add</span> 函数</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>subq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>addl    %<span class="kw">esi</span>, %<span class="kw">edi</span> //a + b</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>addl    %<span class="kw">edx</span>, %<span class="kw">edi</span> // c</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>addl    %<span class="kw">ecx</span>, %<span class="kw">edi</span> // d</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>addl    %r8d, %<span class="kw">edi</span> // e</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>addl    %r9d, %<span class="kw">edi</span> // f</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>movl    %<span class="kw">edi</span>, %<span class="kw">eax</span>  </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>addl    <span class="dv">64</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // g</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>addl    <span class="dv">8</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // array[<span class="dv">1</span>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>addl    <span class="dv">4</span>(%<span class="kw">rsp</span>), %<span class="kw">eax</span> // array[<span class="dv">0</span>]</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>addq<span class="bn">    $56, </span>%<span class="kw">rsp</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>// main 函数</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>pushq<span class="bn">   $0       </span>// g</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>movl<span class="bn">    $0, </span>%r9d // f</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>movl<span class="bn">    $0, </span>%r8d // e</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>movl<span class="bn">    $0, </span>%<span class="kw">ecx</span> // d</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>movl<span class="bn">    $0, </span>%<span class="kw">edx</span> // c</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>movl<span class="bn">    $8, </span>%<span class="kw">esi</span> // b</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a>movl<span class="bn">    $7, </span>%<span class="kw">edi</span> // a</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a>addq<span class="bn">    $16, </span>%<span class="kw">rsp</span></span></code></pre></div>
 <p>可以看到, 在main函数中通过<code>push</code>操作将第7个参数压栈, 调用完成后通过<code>add</code>释放栈空间 这也是上面说的为什么即使有<code>rbp</code>作为基地址, 仍然要移动<code>rsp</code>的原因</p>
 <p></br></p>
 <p>本文大致讲了两种函数调用的方式, 可以看出, 仅使用<code>rsp</code>代码会简洁不少, 而<code>rbp</code>方式仅仅是方便于调试, 所以在开了优化的情况下, 一般会被编译为<code>rsp</code>方式</p>

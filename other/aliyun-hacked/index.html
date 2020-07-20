@@ -32,24 +32,24 @@
 <ol type="1">
 <li><p>不要忽视任何一封安全邮件</p></li>
 <li><p>开<code>redis</code>设密码</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># 在容器执行redis-server启动命令，并打开redis持久化</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="ex">docker</span> run -d --name redis \</span>
-<span id="cb1-3"><a href="#cb1-3"></a>              -p 6378:6379 <span class="dt">\ </span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>              <span class="ex">redis</span>:latest \</span>
-<span id="cb1-5"><a href="#cb1-5"></a>              redis-server --appendonly yes --requirepass <span class="st">&quot;your_pass&quot;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># 在容器执行redis-server启动命令，并打开redis持久化</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">docker</span> run -d --name redis <span class="kw">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>              <span class="ex">-p</span> 6378:6379 <span class="dt">\ </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>              <span class="ex">redis</span>:latest <span class="kw">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>              <span class="ex">redis-server</span> --appendonly yes --requirepass <span class="st">&quot;your_pass&quot;</span></span></code></pre></div></li>
 <li><p>开<code>mysql</code>文件映射</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">docker</span> run --name=mysql \</span>
-<span id="cb2-2"><a href="#cb2-2"></a>            -v ~/docker/mysql/data:/var/lib/mysql \</span>
-<span id="cb2-3"><a href="#cb2-3"></a>            -e MYSQL_ROOT_HOST=% -p 3306:3306 \</span>
-<span id="cb2-4"><a href="#cb2-4"></a>            -d mysql/mysql-server</span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># 查看密码</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="ex">docker</span> logs mysql1 <span class="op">2&gt;&amp;1</span> <span class="kw">|</span> <span class="fu">grep</span> GENERATED</span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># 进入容器</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="ex">docker</span> exec -it mysql mysql -uroot -p</span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># 修改密码</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="ex">ALTER</span> USER <span class="st">&#39;root&#39;</span>@<span class="st">&#39;localhost&#39;</span> IDENTIFIED BY <span class="st">&#39;password&#39;</span><span class="kw">;</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="ex">ALTER</span> USER <span class="st">&#39;root&#39;</span>@<span class="st">&#39;%&#39;</span> IDENTIFIED BY <span class="st">&#39;password&#39;</span><span class="kw">;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">docker</span> run --name=mysql <span class="kw">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>            <span class="ex">-v</span> ~/docker/mysql/data:/var/lib/mysql <span class="kw">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>            <span class="ex">-e</span> MYSQL_ROOT_HOST=% -p 3306:3306 <span class="kw">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>            <span class="ex">-d</span> mysql/mysql-server</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="co"># 查看密码</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="ex">docker</span> logs mysql1 <span class="op">2&gt;&amp;1</span> <span class="kw">|</span> <span class="fu">grep</span> GENERATED</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co"># 进入容器</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="ex">docker</span> exec -it mysql mysql -uroot -p</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co"># 修改密码</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="ex">ALTER</span> USER <span class="st">&#39;root&#39;</span>@<span class="st">&#39;localhost&#39;</span> IDENTIFIED BY <span class="st">&#39;password&#39;</span><span class="kw">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="ex">ALTER</span> USER <span class="st">&#39;root&#39;</span>@<span class="st">&#39;%&#39;</span> IDENTIFIED BY <span class="st">&#39;password&#39;</span><span class="kw">;</span></span></code></pre></div></li>
 <li><p>定时备份数据库</p></li>
 </ol>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/tutorial/hexo-theme-dev/">上一篇</a><a class="next" href="/tutorial/hexo-theme-theory/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({

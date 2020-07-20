@@ -37,15 +37,15 @@
 <ol type="1">
 <li><p>使用<code>zsh</code>作为默认<code>bash</code>(可选, 这里不做过多介绍)</p></li>
 <li><p>当使用<code>Windows Search</code> 打开<code>Windows Terminal</code>时, 默认进入用户目录<code>~</code></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">if [[</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">&quot;</span> <span class="ot">==</span> *<span class="st">&quot;Windows&quot;</span>*<span class="kw"> ]]</span> ; <span class="kw">then</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>    <span class="bu">cd</span> ~</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">if [[</span> <span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">&quot;</span> <span class="ot">==</span> *<span class="st">&quot;Windows&quot;</span>*<span class="kw"> ]]</span> ; <span class="kw">then</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="bu">cd</span> ~</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">fi</span></span></code></pre></div>
 <blockquote>
 <p>由于我使用了oh-my-zsh, 每次安装会覆盖原有的.zshrc, 所以我的所有关于bash配置都写在~/.profile下, 并在.zshrc中使用source .profile加载</p>
 </blockquote></li>
 <li><p>配置默认使用<code>vim</code>作为可视化编辑器</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">export</span> <span class="va">VISUAL=</span>vim</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">export</span> <span class="va">EDITOR=</span><span class="st">&quot;</span><span class="va">$VISUAL</span><span class="st">&quot;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="bu">export</span> <span class="va">VISUAL=</span>vim</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="bu">export</span> <span class="va">EDITOR=</span><span class="st">&quot;</span><span class="va">$VISUAL</span><span class="st">&quot;</span></span></code></pre></div></li>
 </ol>
 <h4 id="wsl2代理设置">wsl2代理设置</h4>
 <p><code>wsl2</code>采用的网络模式是<code>Nat</code>模式, 在<code>wsl2</code>中如果想使用<code>Windows</code>下的代理会比较麻烦, 不能直接通过<code>localhost</code>访问</p>
@@ -53,17 +53,17 @@
 <p>但Windows却可以使用localhost访问wsl2中的服务, 很便于程序的调试</p>
 </blockquote>
 <p>首先需要安装<code>proxychains4</code></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sudo</span> apt install proxychains4</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">sudo</span> apt install proxychains4</span></code></pre></div>
 <p>复制一份配置文件到用户目录</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">sudo</span> cp /etc/proxychains4.conf ~/.proxychains.conf</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="fu">sudo</span> cp /etc/proxychains4.conf ~/.proxychains.conf</span></code></pre></div>
 <p>配置bash设置(.profile中)</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># 找到windows ip</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="bu">export</span> <span class="va">WIN_IP=</span><span class="kw">`</span><span class="fu">cat</span> /etc/resolv.conf <span class="kw">|</span> <span class="fu">grep</span> nameserver <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span><span class="kw">`</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># 删除原有socks5配置</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">sed</span> -i <span class="st">&#39;/socks5/d&#39;</span> ~/.proxychains.conf</span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># 添加新的socks5配置</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">sed</span> -i <span class="st">&#39;$a socks5 &#39;</span><span class="va">${WIN_IP}</span><span class="st">&#39; 7891&#39;</span> ~/.proxychains.conf</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="bu">alias</span> pc=<span class="st">&#39;proxychains4 -q -f ~/.proxychains.conf&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># 找到windows ip</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="bu">export</span> <span class="va">WIN_IP=</span><span class="kw">`</span><span class="fu">cat</span> /etc/resolv.conf <span class="kw">|</span> <span class="fu">grep</span> nameserver <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span><span class="kw">`</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co"># 删除原有socks5配置</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">&#39;/socks5/d&#39;</span> ~/.proxychains.conf</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co"># 添加新的socks5配置</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">&#39;$a socks5 &#39;</span><span class="va">${WIN_IP}</span><span class="st">&#39; 7891&#39;</span> ~/.proxychains.conf</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="bu">alias</span> pc=<span class="st">&#39;proxychains4 -q -f ~/.proxychains.conf&#39;</span></span></code></pre></div>
 <p>这样每次启动都会寻找正确的ip地址, 并设置好给<code>proxychains4</code></p>
 <h4 id="vscode设置">vscode设置</h4>
 <p>还是由于网络问题, <code>remote server</code>继承了主<code>vscode</code>的配置, 代理会默认被设为<code>127.0.0.1:7890</code>, 会出现无法下载插件, 或无法使用插件等问题</p>

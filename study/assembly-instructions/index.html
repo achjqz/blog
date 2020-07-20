@@ -7,135 +7,135 @@
 <ol type="1">
 <li>操作数顺序不同</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1"></a>Op-code src dst //<span class="pp">AT</span>&amp;T语法</span>
-<span id="cb1-2"><a href="#cb1-2"></a>Op-code dst src //Intel语法</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>Op-code src dst //<span class="pp">AT</span>&amp;T语法</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>Op-code dst src //Intel语法</span></code></pre></div>
 <ol start="2" type="1">
 <li>寄存器, 立即数的使用</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1"></a>movl  <span class="dv">$</span><span class="bn">0xff</span>,%<span class="kw">ebx</span> //<span class="pp">AT</span>&amp;T语法</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">mov</span>   <span class="kw">ebx</span><span class="bn">,0ffh   </span>//Intel语法</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>movl  <span class="dv">$</span><span class="bn">0xff</span>,%<span class="kw">ebx</span> //<span class="pp">AT</span>&amp;T语法</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="bu">mov</span>   <span class="kw">ebx</span><span class="bn">,0ffh   </span>//Intel语法</span></code></pre></div>
 <ol start="3" type="1">
 <li>操作数大小</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1"></a>movb  (%<span class="kw">rbp</span>), %<span class="kw">al</span> //<span class="pp">AT</span>&amp;T语法</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="bu">mov</span>   <span class="kw">al</span>, <span class="dt">byte</span> <span class="dt">ptr</span> <span class="kw">rbp</span>   //Intel语法</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>movb  (%<span class="kw">rbp</span>), %<span class="kw">al</span> //<span class="pp">AT</span>&amp;T语法</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="bu">mov</span>   <span class="kw">al</span>, <span class="dt">byte</span> <span class="dt">ptr</span> <span class="kw">rbp</span>   //Intel语法</span></code></pre></div>
 <blockquote>
 <p>movb, movw, movl, movq 分别代表操作1, 2, 4, 8字节, 若仅是mov, 则根据应用是32位还是64位决定是movl还是movq</p>
 </blockquote>
 <ol start="4" type="1">
 <li>内存寻址</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1"></a>movl <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span> //<span class="pp">AT</span>&amp;T语法</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="bu">mov</span>  <span class="kw">eax</span>, [%<span class="kw">ebp</span> + %<span class="kw">edx</span> * <span class="dv">4</span> - 8h] //Intel语法</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>movl <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span> //<span class="pp">AT</span>&amp;T语法</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="bu">mov</span>  <span class="kw">eax</span>, [%<span class="kw">ebp</span> + %<span class="kw">edx</span> * <span class="dv">4</span> - 8h] //Intel语法</span></code></pre></div>
 <h3 id="常见指令">常见指令</h3>
 <h4 id="mov指令">mov指令</h4>
 <p>mov作为最常用的指令, 用法非常灵活</p>
 <p>语法</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb5-1"><a href="#cb5-1"></a><span class="bu">mov</span> &lt;reg&gt;, &lt;reg&gt; // 寄存器的值到寄存器的值</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="bu">mov</span> &lt;reg&gt;, &lt;mem&gt; // 寄存器的值到寄存器指针指向的内存(通过加括号的方式)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="bu">mov</span> &lt;mem&gt;, &lt;reg&gt; // 内存到寄存器</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="bu">mov</span> &lt;imm&gt;, &lt;reg&gt; // 立即数到寄存器(立即数前要加<span class="dv">$</span>)</span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="bu">mov</span> &lt;imm&gt;, &lt;mem&gt; // 立即数到内存</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="bu">mov</span> &lt;reg&gt;, &lt;reg&gt; // 寄存器的值到寄存器的值</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="bu">mov</span> &lt;reg&gt;, &lt;mem&gt; // 寄存器的值到寄存器指针指向的内存(通过加括号的方式)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="bu">mov</span> &lt;mem&gt;, &lt;reg&gt; // 内存到寄存器</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="bu">mov</span> &lt;imm&gt;, &lt;reg&gt; // 立即数到寄存器(立即数前要加<span class="dv">$</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="bu">mov</span> &lt;imm&gt;, &lt;mem&gt; // 立即数到内存</span></code></pre></div>
 <blockquote>
 <p>内存寻址方式可采用disp(base, index, scale)的方式, 对表达式整体计算的值作为内存地址 如mov -8(%ebp, %edx, 4), %eax 表示加载 *(ebp + (edx * 4) - 8) 到 eax寄存器</p>
 </blockquote>
 <h4 id="push-pop指令">push / pop指令</h4>
 <p>push可以理解为在mov到esp内存的同时使<code>esp</code>减小(高地址到低地址扩展) pop 可以理解为在mov到esp内存的同时的同时使<code>esp</code>增加</p>
 <p>语法</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb6-1"><a href="#cb6-1"></a><span class="bu">push</span> &lt;reg&gt;</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="bu">push</span> &lt;mem&gt;</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="bu">push</span> &lt;imm&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="bu">push</span> &lt;reg&gt;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="bu">push</span> &lt;mem&gt;</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="bu">push</span> &lt;imm&gt;</span></code></pre></div>
 <blockquote>
 <p>在64位里push操作8字节的数, 32位只能操作4子节的数</p>
 </blockquote>
 <h4 id="lea-指令">lea 指令</h4>
 <p>lea 可以将内存操作数放入寄存器中 lea 虽然用法单一, 但十分灵活, 常用来代替乘法和加法指令</p>
 <p>语法</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb7-1"><a href="#cb7-1"></a><span class="bu">lea</span> &lt;mem&gt;, &lt;reg&gt; </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="bu">lea</span> &lt;mem&gt;, &lt;reg&gt; </span></code></pre></div>
 <blockquote>
 <p>这里的mem并不是真的取内存中的值, 而是操作数本身 如lea -8(%ebp, %edx, 4), %eax 表示加载 ebp + (edx * 4) - 8 的值到 eax寄存器</p>
 </blockquote>
 <h4 id="add-sub-指令">add / sub 指令</h4>
 <p>这两个指令比较简单, 就是做加法和减法, 将操作结果存在目的操作数中</p>
 <p>语法</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb8-1"><a href="#cb8-1"></a><span class="bu">add</span> &lt;reg&gt;, &lt;reg&gt;</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="bu">add</span> &lt;mem&gt;, &lt;reg&gt;</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="bu">add</span> &lt;reg&gt;, &lt;mem&gt;</span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="bu">add</span> &lt;imm&gt;, &lt;reg&gt;</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="bu">add</span> &lt;imm&gt;, &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="bu">add</span> &lt;reg&gt;, &lt;reg&gt;</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="bu">add</span> &lt;mem&gt;, &lt;reg&gt;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="bu">add</span> &lt;reg&gt;, &lt;mem&gt;</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="bu">add</span> &lt;imm&gt;, &lt;reg&gt;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="bu">add</span> &lt;imm&gt;, &lt;mem&gt;</span></code></pre></div>
 <h4 id="inc-dec-指令">inc / dec 指令</h4>
 <p>基本和add / sub一致, 但只能加减1</p>
 <p>语法</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb9-1"><a href="#cb9-1"></a><span class="bu">inc</span> &lt;reg&gt;</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">inc</span> &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="bu">inc</span> &lt;reg&gt;</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="bu">inc</span> &lt;mem&gt;</span></code></pre></div>
 <h4 id="imul-指令">imul 指令</h4>
 <p>乘法指令, 可以有两个操作数或三个操作数, 第三个操作数必须为寄存器</p>
 <p>语法</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb10-1"><a href="#cb10-1"></a><span class="bu">imul</span> &lt;reg32&gt;, &lt;reg32&gt;</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="bu">imul</span> &lt;mem&gt;, &lt;reg32&gt;</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="bu">imul</span> &lt;imm&gt;, &lt;reg32&gt;, &lt;reg32&gt;</span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="bu">imul</span> &lt;imm&gt;, &lt;mem&gt;, &lt;reg32&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="bu">imul</span> &lt;reg32&gt;, &lt;reg32&gt;</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="bu">imul</span> &lt;mem&gt;, &lt;reg32&gt;</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="bu">imul</span> &lt;imm&gt;, &lt;reg32&gt;, &lt;reg32&gt;</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="bu">imul</span> &lt;imm&gt;, &lt;mem&gt;, &lt;reg32&gt;</span></code></pre></div>
 <h4 id="idiv-指令">idiv 指令</h4>
 <p>除法指令, 需要把被除数放入eax寄存器中, 得到商在eax中, 余数在edx中</p>
 <p>语法</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb11-1"><a href="#cb11-1"></a><span class="bu">idiv</span> &lt;reg&gt;</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="bu">idiv</span> &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="bu">idiv</span> &lt;reg&gt;</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="bu">idiv</span> &lt;mem&gt;</span></code></pre></div>
 <h4 id="and-or-xor-指令">and / or / xor 指令</h4>
 <p>做与, 或, 异或运算</p>
 <p>语法</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb12-1"><a href="#cb12-1"></a><span class="bu">and</span> &lt;reg&gt;, &lt;reg&gt;</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="bu">and</span> &lt;mem&gt;, &lt;reg&gt;</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="bu">and</span> &lt;reg&gt;, &lt;mem&gt;</span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="bu">and</span> &lt;imm&gt;, &lt;reg&gt;</span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="bu">and</span> &lt;imm&gt;, &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="bu">and</span> &lt;reg&gt;, &lt;reg&gt;</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="bu">and</span> &lt;mem&gt;, &lt;reg&gt;</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="bu">and</span> &lt;reg&gt;, &lt;mem&gt;</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="bu">and</span> &lt;imm&gt;, &lt;reg&gt;</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a><span class="bu">and</span> &lt;imm&gt;, &lt;mem&gt;</span></code></pre></div>
 <blockquote>
 <p>常使用xor %edx, %edx 将寄存器置0</p>
 </blockquote>
 <h4 id="not-neg-指令">not / neg 指令</h4>
 <p>not 按位取反, neg 按补码取负</p>
 <p>语法</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb13-1"><a href="#cb13-1"></a><span class="bu">not</span> &lt;reg&gt;</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="bu">not</span> &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="bu">not</span> &lt;reg&gt;</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="bu">not</span> &lt;mem&gt;</span></code></pre></div>
 <h4 id="shl-shr-sal-sar指令">shl / shr / sal / sar指令</h4>
 <p>逻辑左移/逻辑右移/算数左移/算数右移操作</p>
 <p>语法</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb14-1"><a href="#cb14-1"></a><span class="bu">shl</span> &lt;imm&gt;, &lt;reg&gt;</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="bu">shl</span> &lt;imm&gt;, &lt;mem&gt;</span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="bu">shl</span> %<span class="kw">cl</span>, &lt;reg&gt;</span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="bu">shl</span> %<span class="kw">cl</span>, &lt;mem&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="bu">shl</span> &lt;imm&gt;, &lt;reg&gt;</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="bu">shl</span> &lt;imm&gt;, &lt;mem&gt;</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="bu">shl</span> %<span class="kw">cl</span>, &lt;reg&gt;</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="bu">shl</span> %<span class="kw">cl</span>, &lt;mem&gt;</span></code></pre></div>
 <h4 id="jmp-jcondition-cmp指令">jmp / jcondition /cmp指令</h4>
 <p>跳转到某一标签, 常用语循环语句和判断语句</p>
 <p>语法</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb15-1"><a href="#cb15-1"></a><span class="bu">jmp</span> &lt;<span class="pp">label</span>&gt;</span>
-<span id="cb15-2"><a href="#cb15-2"></a></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="bu">cmp</span> &lt;reg&gt;, &lt;reg&gt;</span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="bu">cmp</span> &lt;mem&gt;, &lt;reg&gt;</span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="bu">cmp</span> &lt;reg&gt;, &lt;mem&gt;</span>
-<span id="cb15-6"><a href="#cb15-6"></a><span class="bu">cmp</span> &lt;imm&gt;, &lt;reg&gt;</span>
-<span id="cb15-7"><a href="#cb15-7"></a></span>
-<span id="cb15-8"><a href="#cb15-8"></a><span class="bu">je</span>  &lt;<span class="pp">label</span>&gt; // 等于时跳转</span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="bu">jne</span> &lt;<span class="pp">label</span>&gt; // 不等时跳转</span>
-<span id="cb15-10"><a href="#cb15-10"></a><span class="bu">jz</span>  &lt;<span class="pp">label</span>&gt; // cmp将两数相减, 为0时跳转</span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="bu">jg</span>  &lt;<span class="pp">label</span>&gt; // 大于时跳转</span>
-<span id="cb15-12"><a href="#cb15-12"></a><span class="bu">jge</span> &lt;<span class="pp">label</span>&gt; // 大于等于跳转</span>
-<span id="cb15-13"><a href="#cb15-13"></a><span class="bu">jl</span>  &lt;<span class="pp">label</span>&gt; // 小于时跳转</span>
-<span id="cb15-14"><a href="#cb15-14"></a><span class="bu">jle</span> &lt;<span class="pp">label</span>&gt; // 小于等于跳转</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="bu">jmp</span> &lt;<span class="pp">label</span>&gt;</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="bu">cmp</span> &lt;reg&gt;, &lt;reg&gt;</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="bu">cmp</span> &lt;mem&gt;, &lt;reg&gt;</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="bu">cmp</span> &lt;reg&gt;, &lt;mem&gt;</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="bu">cmp</span> &lt;imm&gt;, &lt;reg&gt;</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a><span class="bu">je</span>  &lt;<span class="pp">label</span>&gt; // 等于时跳转</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="bu">jne</span> &lt;<span class="pp">label</span>&gt; // 不等时跳转</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a><span class="bu">jz</span>  &lt;<span class="pp">label</span>&gt; // cmp将两数相减, 为0时跳转</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="bu">jg</span>  &lt;<span class="pp">label</span>&gt; // 大于时跳转</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a><span class="bu">jge</span> &lt;<span class="pp">label</span>&gt; // 大于等于跳转</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a><span class="bu">jl</span>  &lt;<span class="pp">label</span>&gt; // 小于时跳转</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a><span class="bu">jle</span> &lt;<span class="pp">label</span>&gt; // 小于等于跳转</span></code></pre></div>
 <h4 id="call-ret-指令">call / ret 指令</h4>
 <p>函数调用及函数返回</p>
 <p>语法</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb16-1"><a href="#cb16-1"></a><span class="bu">call</span> &lt;<span class="pp">label</span>&gt;</span>
-<span id="cb16-2"><a href="#cb16-2"></a></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="bu">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="bu">call</span> &lt;<span class="pp">label</span>&gt;</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="bu">ret</span></span></code></pre></div>
 <h3 id="常见问题">常见问题</h3>
 <h4 id="mov-和-lea-指令的区别">mov 和 lea 指令的区别?</h4>
 <p>在简单操作上两者可以等价</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb17-1"><a href="#cb17-1"></a><span class="bu">mov</span> %<span class="kw">eax</span>, %<span class="kw">ebx</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="bu">lea</span> (%<span class="kw">eax</span>), %<span class="kw">ebx</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="bu">mov</span> %<span class="kw">eax</span>, %<span class="kw">ebx</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="bu">lea</span> (%<span class="kw">eax</span>), %<span class="kw">ebx</span></span></code></pre></div>
 <p>若mov使用了内存寻址, 则mov会取到对应地址的值, 而lea仅操作地址</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb18-1"><a href="#cb18-1"></a><span class="bu">mov</span> <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="bu">lea</span> <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="bu">mov</span> <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="bu">lea</span> <span class="dv">-8</span>(%<span class="kw">ebp</span>, %<span class="kw">edx</span>, <span class="dv">4</span>), %<span class="kw">eax</span></span></code></pre></div>
 <p>在这种情况下, mov便无法替代lea</p>
 <h4 id="i为什么不是原子操作">i++为什么不是原子操作?</h4>
 <p>尽管add/inc可以直接对内存进行操作, 但实际情况下会先从内存加载到寄存器中, 再对寄存器进行加操作</p>

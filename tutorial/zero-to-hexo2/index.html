@@ -6,58 +6,58 @@
 <ol type="1">
 <li><p>新建workflow文件</p>
 <p>只有当项目中<code>.github/workflows</code>目录下存在以<code>.yml</code>结尾的配置才会触发<code>Github Actions</code></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="bu">cd</span> Blog</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">mkdir</span> -p .github/workflows</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">touch</span> .github/workflows/deploy.yml </span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="bu">cd</span> Blog</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="fu">mkdir</span> -p .github/workflows</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="fu">touch</span> .github/workflows/deploy.yml </span></code></pre></div></li>
 <li><p>配置<code>deploy.yml</code>文件</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># workflow name</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy To Github Pages</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># 当有 push 到仓库和外部触发的时候就运行</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">push</span><span class="kw">,</span><span class="at"> repository_dispatch</span><span class="kw">]</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># ACCESS_TOKEN</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">jobs</span><span class="kw">:</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy Hexo Public To Pages</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest </span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="at">      </span><span class="fu">TZ</span><span class="kw">:</span><span class="at"> Asia/Shanghai    </span></span>
-<span id="cb2-14"><a href="#cb2-14"></a></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">    # check it to your workflow can access it</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">    # from: https://github.com/actions/checkout</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout 🛎️</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span><span class="co"> # If you&#39;re using actions/checkout@v2 you must set persist-credentials    to false in most cases for the deployment to work correctly.</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="at">        </span><span class="fu">persist-credentials</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="at">        </span><span class="fu">submodules</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="co">    # from: https://github.com/actions/setup-node  </span></span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup Node.js 10.x 🔧</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-node@master</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="at">        </span><span class="fu">node-version</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;10.x&quot;</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a></span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install pandoc 🔧</span></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb2-32"><a href="#cb2-32"></a>        curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep &quot;browser_download_url.   *deb&quot; | cut -d &#39;&quot;&#39; -f 4 | wget -qi -</span>
-<span id="cb2-33"><a href="#cb2-33"></a>        sudo dpkg -i *.deb</span>
-<span id="cb2-34"><a href="#cb2-34"></a></span>
-<span id="cb2-35"><a href="#cb2-35"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup Hexo Dependencies 🔧</span></span>
-<span id="cb2-36"><a href="#cb2-36"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb2-37"><a href="#cb2-37"></a>        npm install hexo-cli -g</span>
-<span id="cb2-38"><a href="#cb2-38"></a>        npm install</span>
-<span id="cb2-39"><a href="#cb2-39"></a>        npm run build</span>
-<span id="cb2-40"><a href="#cb2-40"></a></span>
-<span id="cb2-41"><a href="#cb2-41"></a><span class="co">    # from https://github.com/marketplace/actions/deploy-to-github-pages   </span></span>
-<span id="cb2-42"><a href="#cb2-42"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy 🚀</span></span>
-<span id="cb2-43"><a href="#cb2-43"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> JamesIves/github-pages-deploy-action@releases/v3</span></span>
-<span id="cb2-44"><a href="#cb2-44"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb2-45"><a href="#cb2-45"></a><span class="at">        </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${ { secrets.ACCESS_TOKEN } }</span><span class="co"> # 删除大括号中间空格</span></span>
-<span id="cb2-46"><a href="#cb2-46"></a><span class="at">        </span><span class="fu">BRANCH</span><span class="kw">:</span><span class="at"> gh-pages</span><span class="co"> # The branch the action should deploy to.</span></span>
-<span id="cb2-47"><a href="#cb2-47"></a><span class="at">        </span><span class="fu">FOLDER</span><span class="kw">:</span><span class="at"> public</span><span class="co"> # The folder the action should deploy.</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a><span class="at">        </span><span class="fu">COMMIT_MESSAGE</span><span class="kw">:</span><span class="at"> ${ { github.event.head_commit.message } }</span><span class="co"> # 删除大括号中间空格</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># workflow name</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy To Github Pages</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># 当有 push 到仓库和外部触发的时候就运行</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="fu">on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">push</span><span class="kw">,</span><span class="at"> repository_dispatch</span><span class="kw">]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co"># ACCESS_TOKEN</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy Hexo Public To Pages</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="at">      </span><span class="fu">TZ</span><span class="kw">:</span><span class="at"> Asia/Shanghai    </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">    # check it to your workflow can access it</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">    # from: https://github.com/actions/checkout</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout 🛎️</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span><span class="co"> # If you&#39;re using actions/checkout@v2 you must set persist-credentials    to false in most cases for the deployment to work correctly.</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="at">        </span><span class="fu">persist-credentials</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="at">        </span><span class="fu">submodules</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="co">    # from: https://github.com/actions/setup-node  </span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup Node.js 10.x 🔧</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-node@master</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="at">        </span><span class="fu">node-version</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;10.x&quot;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install pandoc 🔧</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>        curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep &quot;browser_download_url.   *deb&quot; | cut -d &#39;&quot;&#39; -f 4 | wget -qi -</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>        sudo dpkg -i *.deb</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup Hexo Dependencies 🔧</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true"></a>        npm install hexo-cli -g</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true"></a>        npm install</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true"></a>        npm run build</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true"></a><span class="co">    # from https://github.com/marketplace/actions/deploy-to-github-pages   </span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy 🚀</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> JamesIves/github-pages-deploy-action@releases/v3</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a><span class="at">        </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${ { secrets.ACCESS_TOKEN } }</span><span class="co"> # 删除大括号中间空格</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true"></a><span class="at">        </span><span class="fu">BRANCH</span><span class="kw">:</span><span class="at"> gh-pages</span><span class="co"> # The branch the action should deploy to.</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true"></a><span class="at">        </span><span class="fu">FOLDER</span><span class="kw">:</span><span class="at"> public</span><span class="co"> # The folder the action should deploy.</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a><span class="at">        </span><span class="fu">COMMIT_MESSAGE</span><span class="kw">:</span><span class="at"> ${ { github.event.head_commit.message } }</span><span class="co"> # 删除大括号中间空格</span></span></code></pre></div>
 <p>最新版可以查看<a href="https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml" target="_blank" rel="noopener">我的配置</a></p></li>
 <li><p>流程介绍</p>
 <p>根据上面的配置可以看到主要分为4步</p>

@@ -7,50 +7,50 @@
 </blockquote>
 <h4 id="og优化级别下">-Og优化级别下</h4>
 <p>首先看<code>add</code>函数</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1"></a>subl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>/* 栈保护代码</span>
-<span id="cb1-3"><a href="#cb1-3"></a>movl<span class="bn">    $20, </span>%<span class="kw">edx</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>movl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">eax</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>movl    %<span class="kw">eax</span>, <span class="dv">44</span>(%<span class="kw">esp</span>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>*/</span>
-<span id="cb1-7"><a href="#cb1-7"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>movl    <span class="dv">68</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // a</span>
-<span id="cb1-9"><a href="#cb1-9"></a>addl    <span class="dv">64</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // b</span>
-<span id="cb1-10"><a href="#cb1-10"></a>addl    <span class="dv">12</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // array[<span class="dv">2</span>]</span>
-<span id="cb1-11"><a href="#cb1-11"></a>addl    <span class="dv">8</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
-<span id="cb1-12"><a href="#cb1-12"></a>/* 栈保护代码</span>
-<span id="cb1-13"><a href="#cb1-13"></a>movl    <span class="dv">44</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>xorl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">ecx</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="bu">jne</span> .L4</span>
-<span id="cb1-16"><a href="#cb1-16"></a>*/</span>
-<span id="cb1-17"><a href="#cb1-17"></a>addl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="bu">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>subl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>/* 栈保护代码</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>movl<span class="bn">    $20, </span>%<span class="kw">edx</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>movl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">eax</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>movl    %<span class="kw">eax</span>, <span class="dv">44</span>(%<span class="kw">esp</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>*/</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>movl    <span class="dv">68</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // a</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>addl    <span class="dv">64</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // b</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>addl    <span class="dv">12</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span> // array[<span class="dv">2</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>addl    <span class="dv">8</span>(%<span class="kw">esp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>/* 栈保护代码</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>movl    <span class="dv">44</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>xorl    %<span class="kw">gs</span>:(%<span class="kw">edx</span>), %<span class="kw">ecx</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="bu">jne</span> .L4</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>*/</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>addl<span class="bn">    $60, </span>%<span class="kw">esp</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="bu">ret</span></span></code></pre></div>
 <p>可以看出和64位程序差别不大, 只是在获取参数的时候使用了栈上的值而不是寄存器</p>
 <p>再看<code>main</code>函数</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>pushl   %<span class="kw">ebp</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>pushl   %<span class="kw">esi</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>pushl   %<span class="kw">ebx</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>pushl   %<span class="kw">ecx</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a>subl<span class="bn">    $36, </span>%<span class="kw">esp</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>movl<span class="bn">    $4, </span><span class="dv">-40</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb2-13"><a href="#cb2-13"></a>movl<span class="bn">    $5, </span><span class="dv">-36</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb2-14"><a href="#cb2-14"></a>movl<span class="bn">    $6, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>pushl<span class="bn">   $8</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a>pushl<span class="bn">   $7</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="bu">call</span>    <span class="bu">add</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>addl<span class="bn">    $12, </span>%<span class="kw">esp</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>pushl   %<span class="kw">eax</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>pushl   %<span class="kw">eax</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a>pushl<span class="bn">   $1</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="bu">call</span>    __printf_chk@PLT</span>
-<span id="cb2-24"><a href="#cb2-24"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>pushl   %<span class="kw">esi</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>pushl   %<span class="kw">ebx</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>pushl   %<span class="kw">ecx</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>subl<span class="bn">    $36, </span>%<span class="kw">esp</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>movl<span class="bn">    $4, </span><span class="dv">-40</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>movl<span class="bn">    $5, </span><span class="dv">-36</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>movl<span class="bn">    $6, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>pushl<span class="bn">   $8</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>pushl<span class="bn">   $7</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>addl<span class="bn">    $12, </span>%<span class="kw">esp</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>pushl<span class="bn">   $1</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a><span class="bu">call</span>    __printf_chk@PLT</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span></code></pre></div>
 <p><code>main</code>函数前面一段多了很多奇怪的指令, <code>ebp</code>这一套上一篇已经说过了, 这里即使开启了优化也保留了<code>ebp</code></p>
 <p>而后面几条<code>pushl</code>保存了几个寄存器的值, 属于<code>Callee Saved</code>, 函数运行结束时会<code>popl</code>还原</p>
 <p>前三条命令有点迷惑, 查了下资料看到了一些解释</p>
@@ -60,46 +60,46 @@
 <p>后面调用函数时并没有将参数压入寄存器, 而是使用<code>push</code>命令压栈, 函数调用结束后使用<code>add</code>命令释放, 这点和64位下多参数情况一致</p>
 <h4 id="无优化下">无优化下</h4>
 <p><code>add</code>函数</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1"></a>pushl   %<span class="kw">ebp</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>subl<span class="bn">    $56, </span>%<span class="kw">esp</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>movl    <span class="dv">8</span>(%<span class="kw">ebp</span>), %<span class="kw">edx</span>    // a</span>
-<span id="cb3-6"><a href="#cb3-6"></a>movl    <span class="dv">12</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>   // b</span>
-<span id="cb3-7"><a href="#cb3-7"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>movl    <span class="dv">-44</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">2</span>]</span>
-<span id="cb3-9"><a href="#cb3-9"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>movl    <span class="dv">-48</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
-<span id="cb3-11"><a href="#cb3-11"></a>addl    %<span class="kw">edx</span>, %<span class="kw">eax</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>movl    <span class="dv">-12</span>(%<span class="kw">ebp</span>), %<span class="kw">ecx</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="bu">leave</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="bu">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>subl<span class="bn">    $56, </span>%<span class="kw">esp</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>movl    <span class="dv">8</span>(%<span class="kw">ebp</span>), %<span class="kw">edx</span>    // a</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>movl    <span class="dv">12</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>   // b</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>movl    <span class="dv">-44</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">2</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>addl    %<span class="kw">eax</span>, %<span class="kw">edx</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>movl    <span class="dv">-48</span>(%<span class="kw">ebp</span>), %<span class="kw">eax</span>  // array[<span class="dv">1</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>addl    %<span class="kw">edx</span>, %<span class="kw">eax</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>movl    <span class="dv">-12</span>(%<span class="kw">ebp</span>), %<span class="kw">ecx</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="bu">leave</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="bu">ret</span></span></code></pre></div>
 <p>可以看出仅仅是使用了<code>ebp</code></p>
 <p>再看<code>main</code>函数</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>pushl   %<span class="kw">ebp</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>pushl   %<span class="kw">ebx</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>pushl   %<span class="kw">ecx</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>subl<span class="bn">    $32, </span>%<span class="kw">esp</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>movl<span class="bn">    $4, </span><span class="dv">-24</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-11"><a href="#cb4-11"></a>movl<span class="bn">    $5, </span><span class="dv">-20</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-12"><a href="#cb4-12"></a>movl<span class="bn">    $6, </span><span class="dv">-16</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-13"><a href="#cb4-13"></a>movl<span class="bn">    $7, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-14"><a href="#cb4-14"></a>movl<span class="bn">    $8, </span><span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-15"><a href="#cb4-15"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>pushl   <span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-17"><a href="#cb4-17"></a>pushl   <span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="bu">call</span>    <span class="bu">add</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a>pushl   %<span class="kw">eax</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a>pushl   %<span class="kw">eax</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="bu">call</span>    printf@PLT</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>leal    <span class="dv">4</span>(%<span class="kw">esp</span>), %<span class="kw">ecx</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>andl    <span class="dv">$</span>-<span class="dv">16</span>, %<span class="kw">esp</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>pushl   <span class="dv">-4</span>(%<span class="kw">ecx</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>pushl   %<span class="kw">ebp</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>movl    %<span class="kw">esp</span>, %<span class="kw">ebp</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>pushl   %<span class="kw">ebx</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>pushl   %<span class="kw">ecx</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>subl<span class="bn">    $32, </span>%<span class="kw">esp</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>xorl    %<span class="kw">eax</span>, %<span class="kw">eax</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>movl<span class="bn">    $4, </span><span class="dv">-24</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>movl<span class="bn">    $5, </span><span class="dv">-20</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>movl<span class="bn">    $6, </span><span class="dv">-16</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>movl<span class="bn">    $7, </span><span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>movl<span class="bn">    $8, </span><span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>pushl   <span class="dv">-28</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>pushl   <span class="dv">-32</span>(%<span class="kw">ebp</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="bu">call</span>    <span class="bu">add</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>addl<span class="bn">    $16, </span>%<span class="kw">esp</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>subl<span class="bn">    $8, </span>%<span class="kw">esp</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>leal    .LC0@GOTOFF(%<span class="kw">ebx</span>), %<span class="kw">eax</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>pushl   %<span class="kw">eax</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a><span class="bu">call</span>    printf@PLT</span></code></pre></div>
 <p>可以看到<code>main</code>函数和优化过的没有大的区别, 只是<code>printf</code>并没有被优化</p>
 <h3 id="总结">总结</h3>
 <p>总的分析下来, 64位程序和32位程序差别不大, 仅是参数传递的差异, 而当64位参数过多时, 也会采用32位压栈的方式传参</p>

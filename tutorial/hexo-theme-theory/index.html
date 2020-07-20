@@ -2,10 +2,10 @@
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hexo主题开发和修改-理论篇</h1><div class="post-info">Apr 11, 2020<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/hexo-theme/">#hexo-theme</a></div><div class="post-content"><p>在寻找Hexo主题时, 发现了一款极其简洁的主题<a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank" rel="noopener">apollo</a>, 这款主题代码量不多, 视图引擎使用的是<code>pug</code>(原名<code>jade</code>), 本文主要讲述进行Hexo主题开发和对主题的理论部分</p>
 <a id="more"></a>
 <h3 id="主题下载和环境配置">主题下载和环境配置</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> clone https://github.com/achjqz/hexo-theme-apollo.git apollo</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="bu">cd</span> apollo</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="ex">npm</span> install</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="ex">npm</span> install --global gulp-cli</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">git</span> clone https://github.com/achjqz/hexo-theme-apollo.git apollo</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">cd</span> apollo</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="ex">npm</span> install</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="ex">npm</span> install --global gulp-cli</span></code></pre></div>
 <blockquote>
 <p>主题用到的所有依赖包都是gulp相关的, gulp可以使开发者更方便的编写css文件</p>
 </blockquote>
@@ -18,10 +18,10 @@
 <h4 id="languages文件夹">languages文件夹</h4>
 <p>根据<a href="https://hexo.io/zh-cn/docs/internationalization.html" target="_blank" rel="noopener">Hexo官网</a>的说明, 在此文件夹下配置多语言文件,可以让网站以不同语言呈现</p>
 <p>例如, 配置<code>en.yml</code>和<code>zh-Hans.yml</code>文件可以支持英语和中文</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># en.yml</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">more</span><span class="kw">:</span><span class="at"> ...more</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># zh-Hans.yml</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">more</span><span class="kw">:</span><span class="at"> ...阅读更多</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># en.yml</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">more</span><span class="kw">:</span><span class="at"> ...more</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># zh-Hans.yml</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="fu">more</span><span class="kw">:</span><span class="at"> ...阅读更多</span></span></code></pre></div>
 <p>在模板中, 使用 __ 或 _p 辅助函数, 即可取得翻译后的字符串, 前者用于一般使用；而后者用于复数字符串</p>
 <pre class="pug"><code>a.read-more(href= url_for(item.path))!= __(&#39;more&#39;)</code></pre>
 <h4 id="layout文件夹">layout文件夹</h4>

@@ -5,36 +5,36 @@
 <p>本文以Linux为例, 其他平台可参照<a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener">Github官方文档</a>操作</p>
 <ol type="1">
 <li><p>生成2048位的密匙 <code>passphrase</code> 可以设置为空</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">ssh-keygen</span> -t rsa -b 4096 -C <span class="st">&quot;your_email@example.com&quot;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">ssh-keygen</span> -t rsa -b 4096 -C <span class="st">&quot;your_email@example.com&quot;</span></span></code></pre></div></li>
 <li><p>设置权限</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># .ssh directory: 700 (drwx------)</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">chmod</span> 700 .ssh</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># public key (.pub file): 644 (-rw-r--r--)</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">chmod</span> 644 .ssh/id_rsa.pub</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># private key (id_rsa): 600 (-rw-------)</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">chmod</span> 600 .ssh/id_rsa</span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># .ssh directory: 700 (drwx------)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">chmod</span> 700 .ssh</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># public key (.pub file): 644 (-rw-r--r--)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="fu">chmod</span> 644 .ssh/id_rsa.pub</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co"># private key (id_rsa): 600 (-rw-------)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="fu">chmod</span> 600 .ssh/id_rsa</span></code></pre></div></li>
 </ol>
 <h4 id="服务器设置">服务器设置</h4>
 <ol type="1">
 <li><p>将公匙用<code>ssh-copy-id</code> 命令传给服务器,实现ssh免密码登陆</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">ssh-copy-id</span> -i ~/.ssh/id_rsa.pub root@serverip </span></code></pre></div></li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">ssh-copy-id</span> -i ~/.ssh/id_rsa.pub root@serverip </span></code></pre></div></li>
 <li><p>服务器端设置<code>/etc/ssh/sshd_config</code>, 使得不能用密码登陆root用户</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="bu">cd</span> /etc/ssh/sshd_config</span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#修改配置</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="ex">PermitRootLogin</span> yes</span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="ex">PasswordAuthentication</span> no</span></code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="bu">cd</span> /etc/ssh/sshd_config</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#修改配置</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="ex">PermitRootLogin</span> yes</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="ex">PasswordAuthentication</span> no</span></code></pre></div></li>
 <li><p>本地新建一个config文件,填入服务器信息,实现简化登陆</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">touch</span> ~/.ssh/config</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># config file</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="ex">Host</span> name</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="ex">Hostname</span> serverip</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="ex">User</span> root</span></code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="fu">touch</span> ~/.ssh/config</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co"># config file</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="ex">Host</span> name</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  <span class="ex">Hostname</span> serverip</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>  <span class="ex">User</span> root</span></code></pre></div></li>
 <li><p>查看服务器ssh登陆日志</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">scp</span> name:/var/log/btmp btmp</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># 筛选日志信息, 实现显示 次数+ IP</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">lastb</span> -f btmp <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $3}&#39;</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> -c <span class="kw">|</span> <span class="fu">sort</span> -nr <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="fu">scp</span> name:/var/log/btmp btmp</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co"># 筛选日志信息, 实现显示 次数+ IP</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="fu">lastb</span> -f btmp <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $3}&#39;</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> -c <span class="kw">|</span> <span class="fu">sort</span> -nr <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div></li>
 </ol>
 <h4 id="ssh高级操作">ssh高级操作</h4>
 <ol type="1">
@@ -49,12 +49,12 @@
 <p>需要使用的本地端口号 </br> ​需要访问的目标机器IP地址 </br> 需要访问的目标机器端口 </br></p>
 </blockquote></li>
 <li><p>将私匙添加到ssh-agent,避免每次都要输密码</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># start ssh-agent</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">ssh-agent</span> -s<span class="va">)</span><span class="st">&quot;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="op">&gt;</span> <span class="ex">Agent</span> pid 59566</span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co"># add ssh key</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="fu">ssh-add</span> ~/.ssh/id_rsa</span></code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># start ssh-agent</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">ssh-agent</span> -s<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="op">&gt;</span> <span class="ex">Agent</span> pid 59566</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co"># add ssh key</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="fu">ssh-add</span> ~/.ssh/id_rsa</span></code></pre></div></li>
 <li><p>跳板登陆 本地A, 跳板服务器B, 目标服务器C</p>
 <p>首先将本地A均可以ssh登陆B和C</p>
 <p>当连接服务器B时,使用ssh -A命令, 以打开agent forwarding</p>
