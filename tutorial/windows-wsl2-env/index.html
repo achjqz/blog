@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Windows下使用wsl2打造极致开发环境 · 潇晗宇浩的博客</title><meta name="description" content="自Windows Terminal发布后一直用得很爽, 我也一直在关注着另一个神器wsl2的到来. Windows 2004 RTM版出来后我便立即重装了系统, 感受到了wsl2的强大. 本文的主要内容就是如何配置wsl2并解决它带来的一些问题"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Windows下使用wsl2打造极致开发环境 · 潇晗宇浩的博客</title><meta name="description" content="自Windows Terminal发布后一直用得很爽, 我也一直在关注着另一个神器wsl2的到来. Windows 2004 RTM版出来后我便立即重装了系统, 感受到了wsl2的强大. 本文的主要内容就是如何配置wsl2并解决它带来的一些问题"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Windows下使用wsl2打造极致开发环境</h1><div class="post-info">Apr 14, 2020<a class="tag-title" href="/tags/windows/">#windows</a><a class="tag-title" href="/tags/wsl2/">#wsl2</a></div><div class="post-content"><p>自Windows Terminal发布后一直用得很爽, 我也一直在关注着另一个'神器'wsl2的到来. Windows 2004 RTM版出来后我便立即重装了系统, 感受到了wsl2的强大. 本文的主要内容就是如何配置wsl2并解决它带来的一些问题</p>
 <a id="more"></a>
 <h4 id="为什么需要wsl2">为什么需要wsl2</h4>
@@ -18,7 +18,7 @@
 <li>自动挂载Windows磁盘, 无缝访问Windows文件</li>
 </ol>
 <h4 id="wsl2安装">wsl2安装</h4>
-<p>具体安装请看<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install" target="_blank" rel="noopener">官方文档</a></p>
+<p>具体安装请看<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">官方文档</a></p>
 <p>大致的步骤是</p>
 <ol type="1">
 <li>打开可选功能的<code>适用于Linux的Windows子系统</code>和<code>虚拟机平台</code></li>
@@ -26,12 +26,12 @@
 <li>在<code>Windows Store</code>中下载<code>Linux</code>发行版, 如<code>Ubuntu</code></li>
 <li>启动<code>Ubuntu</code>, 设置用户名, 密码(此时默认是<code>wsl</code>而不是<code>wsl2</code>)</li>
 <li>在<code>powershell</code>中根据文档切换成<code>wsl2</code></li>
-<li>若提示切换失败, 可能需要手动安装内核, 去<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel" target="_blank" rel="noopener">官网</a>下载安装</li>
+<li>若提示切换失败, 可能需要手动安装内核, 去<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel">官网</a>下载安装</li>
 </ol>
 <h4 id="windows-terminal配置">Windows Terminal配置</h4>
 <ol type="1">
-<li>主题配置 这里贴一份我自己的配置, 有需要的可以<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/settings.json" target="_blank" rel="noopener">下载</a>修改 <img src="https://pic.rmb.bdstatic.com/3a62a32f090a8aed6fb9caa0af0019eb.png" alt="windows-terminal" /></li>
-<li>右键-在此文件夹中打开 这个功能需要添加注册表, 有需要可以<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/right.reg" target="_blank" rel="noopener">下载</a>, 运行</li>
+<li>主题配置 这里贴一份我自己的配置, 有需要的可以<a target="_blank" rel="noopener" href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/settings.json">下载</a>修改 <img src="https://pic.rmb.bdstatic.com/3a62a32f090a8aed6fb9caa0af0019eb.png" alt="windows-terminal" /></li>
+<li>右键-在此文件夹中打开 这个功能需要添加注册表, 有需要可以<a target="_blank" rel="noopener" href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/right.reg">下载</a>, 运行</li>
 </ol>
 <h4 id="wsl2简单配置">wsl2简单配置</h4>
 <ol type="1">
@@ -58,11 +58,11 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="fu">sudo</span> cp /etc/proxychains4.conf ~/.proxychains.conf</span></code></pre></div>
 <p>配置bash设置(.profile中)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># 找到windows ip</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="bu">export</span> <span class="va">WIN_IP=</span><span class="kw">`</span><span class="fu">cat</span> /etc/resolv.conf <span class="kw">|</span> <span class="fu">grep</span> nameserver <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span><span class="kw">`</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="bu">export</span> <span class="va">WIN_IP=</span><span class="kw">`</span><span class="fu">cat</span> /etc/resolv.conf <span class="kw">|</span> <span class="fu">grep</span> nameserver <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;&amp;#123;print $2&amp;#125;&#39;</span><span class="kw">`</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co"># 删除原有socks5配置</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">&#39;/socks5/d&#39;</span> ~/.proxychains.conf</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co"># 添加新的socks5配置</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">&#39;$a socks5 &#39;</span><span class="va">${WIN_IP}</span><span class="st">&#39; 7891&#39;</span> ~/.proxychains.conf</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="fu">sed</span> -i <span class="st">&#39;$a socks5 &#39;</span>$<span class="kw">&amp;</span>#<span class="ex">123</span><span class="kw">;</span><span class="ex">WIN_IP</span><span class="kw">&amp;</span>#<span class="ex">125</span><span class="kw">;</span><span class="st">&#39; 7891&#39;</span> <span class="ex">~/.proxychains.conf</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="bu">alias</span> pc=<span class="st">&#39;proxychains4 -q -f ~/.proxychains.conf&#39;</span></span></code></pre></div>
 <p>这样每次启动都会寻找正确的ip地址, 并设置好给<code>proxychains4</code></p>
 <h4 id="vscode设置">vscode设置</h4>
@@ -71,7 +71,7 @@
 <h4 id="其他配置">其他配置</h4>
 <p>大多数软件都能使用<code>wsl2</code>替代, 如<code>git</code>, <code>c++</code>, <code>python</code>, <code>golang</code>等</p>
 <p>但还是有些依赖图形化的软件只能在<code>Windows</code>下运行, 如<code>IDEA</code>, <code>Android Studio</code>等</p>
-<p>这些软件也依赖于<code>git</code>, 但又不想在<code>Windows</code>又装一个重量级的<code>git bash</code>, 于是我找到两种解决方案, 一种是<code>git</code>映射到<code>wsl2</code>中的<code>git</code>, 第二种是额外下载一个轻量级的<code>git</code>--<a href="https://github.com/git-for-windows/git/releases" target="_blank" rel="noopener">MinGit</a></p>
+<p>这些软件也依赖于<code>git</code>, 但又不想在<code>Windows</code>又装一个重量级的<code>git bash</code>, 于是我找到两种解决方案, 一种是<code>git</code>映射到<code>wsl2</code>中的<code>git</code>, 第二种是额外下载一个轻量级的<code>git</code>--<a target="_blank" rel="noopener" href="https://github.com/git-for-windows/git/releases">MinGit</a></p>
 <p>这里推荐第二种方法, 简单, 最小只有20M左右, 而且无需安装</p>
 <h4 id="坑">坑</h4>
 <p><code>wsl2</code>唯一的缺点是无法自动缩进磁盘空间, 当突然下载大文件后又删除后, 虚拟机占用空间并不会减少, 只会持续扩张. 目前解决办法是磁盘分区, 后续官网应该有更好的解决方法</p>

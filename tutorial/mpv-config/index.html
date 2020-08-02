@@ -1,25 +1,25 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> MPV视频播放器配置与插件优化 · 潇晗宇浩的博客</title><meta name="description" content="原来在Windows下一直用potplayer作为视频播放器, 也没发现什么大问题, 无广告, 支持格式全. 然而最近在倍速播放视频时声音老是出问题, 便搜寻到了一款更简洁的播放器MPV, 也是因为过于简洁, 所以需要配置插件做优化"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> MPV视频播放器配置与插件优化 · 潇晗宇浩的博客</title><meta name="description" content="原来在Windows下一直用potplayer作为视频播放器, 也没发现什么大问题, 无广告, 支持格式全. 然而最近在倍速播放视频时声音老是出问题, 便搜寻到了一款更简洁的播放器MPV, 也是因为过于简洁, 所以需要配置插件做优化"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">MPV视频播放器配置与插件优化</h1><div class="post-info">Apr 27, 2020<a class="tag-title" href="/tags/mpv/">#mpv</a><a class="tag-title" href="/tags/software/">#software</a></div><div class="post-content"><p>原来在Windows下一直用potplayer作为视频播放器, 也没发现什么大问题, 无广告, 支持格式全. 然而最近在倍速播放视频时声音老是出问题, 便搜寻到了一款更简洁的播放器MPV, 也是因为过于简洁, 所以需要配置插件做优化</p>
 <a id="more"></a>
 <h4 id="mpv安装">MPV安装</h4>
-<p>官方没有提供直接的安装包, 但推荐了一系列的<a href="https://mpv.io/installation/" target="_blank" rel="noopener">第三方编译包</a>, 这里我选择Windows平台的<a href="https://sourceforge.net/projects/mpv-player-windows/files/" target="_blank" rel="noopener">安装包</a></p>
+<p>官方没有提供直接的安装包, 但推荐了一系列的<a target="_blank" rel="noopener" href="https://mpv.io/installation/">第三方编译包</a>, 这里我选择Windows平台的<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/mpv-player-windows/files/">安装包</a></p>
 <p>下载后直接解压到一个喜欢的目录, 运行目录下的<code>installer</code>文件下中<code>mpv-install.bat</code> 文件可将mpv注册到注册表</p>
 <p>最后将mpv设置成默认的视频播放软件</p>
 <h4 id="mpv配置">MPV配置</h4>
 <p>在mpv安装目录下新建一个<code>portable_config</code>文件夹方便管理配置和插件, 新建配置文件<code>mpv.conf</code></p>
-<p>这里贴一个我在网上找的<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/mpv.conf" target="_blank" rel="noopener">配置</a></p>
-<p>快捷键这里用官方默认的, 不做修改, 可在<a href="https://mpv.io/manual/master/#keyboard-control" target="_blank" rel="noopener">官网文档</a>查看</p>
+<p>这里贴一个我在网上找的<a target="_blank" rel="noopener" href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/mpv.conf">配置</a></p>
+<p>快捷键这里用官方默认的, 不做修改, 可在<a target="_blank" rel="noopener" href="https://mpv.io/manual/master/#keyboard-control">官网文档</a>查看</p>
 <h4 id="插件配置">插件配置</h4>
-<p>官方记录了很多第三方插件, 如果有需要可以去<a href="https://github.com/mpv-player/mpv/wiki/User-Scripts" target="_blank" rel="noopener">查看</a></p>
+<p>官方记录了很多第三方插件, 如果有需要可以去<a target="_blank" rel="noopener" href="https://github.com/mpv-player/mpv/wiki/User-Scripts">查看</a></p>
 <p>这里我的需求有两个, 一个是可以选择播放列表, 一个是可以查看播放历史</p>
-<p>播放列表使用的插件是<a href="https://github.com/jonniek/mpv-playlistmanager" target="_blank" rel="noopener">playlistmanager</a>, 只需下载其中的<code>playlistmanager.conf</code>, <code>playlistmanager.lua</code> 分别放入<code>portable_config</code>中的<code>script-opts</code>文件夹和<code>scripts</code>文件夹</p>
+<p>播放列表使用的插件是<a target="_blank" rel="noopener" href="https://github.com/jonniek/mpv-playlistmanager">playlistmanager</a>, 只需下载其中的<code>playlistmanager.conf</code>, <code>playlistmanager.lua</code> 分别放入<code>portable_config</code>中的<code>script-opts</code>文件夹和<code>scripts</code>文件夹</p>
 <blockquote>
 <p>这里默认的配置字体有点大, 可以修改style_ass_tags配置项调整大小</p>
 </blockquote>
-<p>播放历史使用的插件是<a href="https://github.com/hacel/mpv-scripts" target="_blank" rel="noopener">recent</a>, 只需下载其中的<code>recent.lua</code>放入<code>scripts</code>文件夹即可</p>
+<p>播放历史使用的插件是<a target="_blank" rel="noopener" href="https://github.com/hacel/mpv-scripts">recent</a>, 只需下载其中的<code>recent.lua</code>放入<code>scripts</code>文件夹即可</p>
 <h4 id="播放文件夹">播放文件夹</h4>
 <p>很多时候都需要按照文件夹来播放, 自动生成播放列表, 配合播放列表插件使用</p>
-<p>这里提供一个注册表<a href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/mpv.reg" target="_blank" rel="noopener">配置</a>, 修改为自己的mpv安装路径, 运行即可</p>
+<p>这里提供一个注册表<a target="_blank" rel="noopener" href="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/mpv.reg">配置</a>, 修改为自己的mpv安装路径, 运行即可</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/study/assembly-function-call-64/">上一篇</a><a class="next" href="/study/assembly-instructions/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '1ad726ece750d0552748',     
     clientSecret: '6917691391883046d263b52a7107fab68e457194',     

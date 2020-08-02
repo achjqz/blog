@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Hexo主题开发和修改-理论篇 · 潇晗宇浩的博客</title><meta name="description" content="在寻找Hexo主题时, 发现了一款极其简洁的主题apollo, 这款主题代码量不多, 视图引擎使用的是pug(原名jade), 本文主要讲述进行Hexo主题开发和对主题的理论部分"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
-</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hexo主题开发和修改-理论篇</h1><div class="post-info">Apr 11, 2020<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/hexo-theme/">#hexo-theme</a></div><div class="post-content"><p>在寻找Hexo主题时, 发现了一款极其简洁的主题<a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank" rel="noopener">apollo</a>, 这款主题代码量不多, 视图引擎使用的是<code>pug</code>(原名<code>jade</code>), 本文主要讲述进行Hexo主题开发和对主题的理论部分</p>
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Hexo主题开发和修改-理论篇 · 潇晗宇浩的博客</title><meta name="description" content="在寻找Hexo主题时, 发现了一款极其简洁的主题apollo, 这款主题代码量不多, 视图引擎使用的是pug(原名jade), 本文主要讲述进行Hexo主题开发和对主题的理论部分"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hexo主题开发和修改-理论篇</h1><div class="post-info">Apr 11, 2020<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/hexo-theme/">#hexo-theme</a></div><div class="post-content"><p>在寻找Hexo主题时, 发现了一款极其简洁的主题<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo">apollo</a>, 这款主题代码量不多, 视图引擎使用的是<code>pug</code>(原名<code>jade</code>), 本文主要讲述进行Hexo主题开发和对主题的理论部分</p>
 <a id="more"></a>
 <h3 id="主题下载和环境配置">主题下载和环境配置</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">git</span> clone https://github.com/achjqz/hexo-theme-apollo.git apollo</span>
@@ -11,12 +11,12 @@
 </blockquote>
 <h3 id="主题目录结构介绍">主题目录结构介绍</h3>
 <figure>
-<img src="https://pic.rmb.bdstatic.com/e5d6dc0330e0dbfb33d4419d968c5a8c.png" alt="" /><figcaption>catalog</figcaption>
+<img src="https://pic.rmb.bdstatic.com/e5d6dc0330e0dbfb33d4419d968c5a8c.png" alt="catalog" /><figcaption aria-hidden="true">catalog</figcaption>
 </figure>
 <h4 id="docs文件夹">docs文件夹</h4>
 <p>这个文件夹是自己新建的, 存放主题的配置文档说明, 可有可无</p>
 <h4 id="languages文件夹">languages文件夹</h4>
-<p>根据<a href="https://hexo.io/zh-cn/docs/internationalization.html" target="_blank" rel="noopener">Hexo官网</a>的说明, 在此文件夹下配置多语言文件,可以让网站以不同语言呈现</p>
+<p>根据<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/internationalization.html">Hexo官网</a>的说明, 在此文件夹下配置多语言文件,可以让网站以不同语言呈现</p>
 <p>例如, 配置<code>en.yml</code>和<code>zh-Hans.yml</code>文件可以支持英语和中文</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># en.yml</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">more</span><span class="kw">:</span><span class="at"> ...more</span></span>
@@ -117,8 +117,8 @@ block content
 p.int= intData
 p.bool= boolData
 p.stringData= stringData
-//- 通过`#{}`连接其他字面量
-p #{stringData} is so good!</code></pre></li>
+//- 通过`#&amp;#123;&amp;#125;`连接其他字面量
+p #&amp;#123;stringData&amp;#125; is so good!</code></pre></li>
 <li><p>条件结构</p>
 <pre class="pug"><code>if A
     ...
@@ -155,10 +155,10 @@ else
 <p>在这里我们通过<code>gulp</code>将<code>scss</code>转化为压缩的<code>css</code>, 即我们只用维护几个碎片的<code>scss</code>文件, 而不是直接修改<code>css</code>文件</p>
 <h4 id="hexo的变量">Hexo的变量</h4>
 <p>在模版中为了渲染出具体的内容需要使用Hexo中的变量</p>
-<p>变量非常多, 建议看<a href="https://hexo.io/zh-cn/docs/variables" target="_blank" rel="noopener">官方文档</a>按需使用</p>
+<p>变量非常多, 建议看<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/variables">官方文档</a>按需使用</p>
 <h4 id="hexo的函数">Hexo的函数</h4>
 <p>在模版中也可以使用Hexo提供的函数, 可进行一些判断或作为工具</p>
-<p>函数也非常多, 建议看<a href="https://hexo.io/zh-cn/docs/helpers" target="_blank" rel="noopener">官方文档</a>按需使用</p>
+<p>函数也非常多, 建议看<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/helpers">官方文档</a>按需使用</p>
 <p></br></p>
 <p>至此, 理论部分已经讲解完成, <a href="https://blog.xhyh.best/tutorial/hexo-theme-dev/">下一篇</a>实践篇将利用这些知识以实际例子讲述如何开发和修改主题</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/other/aliyun-hacked/">上一篇</a><a class="next" href="/tutorial/zero-to-hexo2/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({

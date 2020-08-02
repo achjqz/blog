@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 用Github Actions将Hexo博客部署到Github Page · 潇晗宇浩的博客</title><meta name="description" content="上篇博客中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 用Github Actions将Hexo博客部署到Github Page · 潇晗宇浩的博客</title><meta name="description" content="上篇博客中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">用Github Actions将Hexo博客部署到Github Page</h1><div class="post-info">Apr 10, 2020<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p><a href="https://blog.xhyh.best/tutorial/zero-to-hexo1/">上篇博客</a>中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page</p>
 <a id="more"></a>
 <h4 id="配置github-actions">配置Github Actions</h4>
@@ -54,11 +54,11 @@
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy 🚀</span></span>
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> JamesIves/github-pages-deploy-action@releases/v3</span></span>
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a><span class="at">        </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${ { secrets.ACCESS_TOKEN } }</span><span class="co"> # 删除大括号中间空格</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a><span class="at">        </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> $&amp;</span><span class="co">#123; &amp;#123; secrets.ACCESS_TOKEN &amp;#125; &amp;#125; # 删除大括号中间空格</span></span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true"></a><span class="at">        </span><span class="fu">BRANCH</span><span class="kw">:</span><span class="at"> gh-pages</span><span class="co"> # The branch the action should deploy to.</span></span>
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true"></a><span class="at">        </span><span class="fu">FOLDER</span><span class="kw">:</span><span class="at"> public</span><span class="co"> # The folder the action should deploy.</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a><span class="at">        </span><span class="fu">COMMIT_MESSAGE</span><span class="kw">:</span><span class="at"> ${ { github.event.head_commit.message } }</span><span class="co"> # 删除大括号中间空格</span></span></code></pre></div>
-<p>最新版可以查看<a href="https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml" target="_blank" rel="noopener">我的配置</a></p></li>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a><span class="at">        </span><span class="fu">COMMIT_MESSAGE</span><span class="kw">:</span><span class="at"> $&amp;</span><span class="co">#123; &amp;#123; github.event.head_commit.message &amp;#125; &amp;#125; # 删除大括号中间空格</span></span></code></pre></div>
+<p>最新版可以查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml">我的配置</a></p></li>
 <li><p>流程介绍</p>
 <p>根据上面的配置可以看到主要分为4步</p>
 <ul>
@@ -83,7 +83,7 @@
 <p>至少必须给<code>read, write repo</code>的权限 保存好生成的一串数字字母</p>
 <h4 id="在github上新建仓库">在Github上新建仓库</h4>
 <ol type="1">
-<li>进入<a href="https://github.com/new" target="_blank" rel="noopener">新建仓库页面</a></li>
+<li>进入<a target="_blank" rel="noopener" href="https://github.com/new">新建仓库页面</a></li>
 <li>新建一个仓库, public和private均可, 但推荐public, 否则Github Page需要另外新建一个仓库 <img src="https://pic.rmb.bdstatic.com/245f3c54feac8e15db0dae57ff18533c.png" alt="new repo" /></li>
 <li>在项目设置中添加<code>ACCESS_SECRET</code>, Value就是上面生成好的token <img src="https://pic.rmb.bdstatic.com/5b364db983b09727ee07df2a9dc54a99.png" alt="secret" /></li>
 <li>根据提示push项目</li>
@@ -92,7 +92,7 @@
 <p>当push项目后, 在Actions选项中能看到已经自动运行部署 <img src="https://pic.rmb.bdstatic.com/8cdc7826c558371149a5198b9fd6e43c.png" alt="workflow" /></p>
 <p>如果有报错信息, 则根据信息修改</p>
 <h4 id="自定义域名设置">自定义域名设置</h4>
-<p>在项目Settings中可以<a href="https://help.github.com/en/github/working-with-github-pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">设置域名</a>并开启https <img src="https://pic.rmb.bdstatic.com/2e181936fe576fb0f0cf484f87d538ad.png" alt="setting" /></p>
+<p>在项目Settings中可以<a target="_blank" rel="noopener" href="https://help.github.com/en/github/working-with-github-pages/configuring-a-custom-domain-for-your-github-pages-site">设置域名</a>并开启https <img src="https://pic.rmb.bdstatic.com/2e181936fe576fb0f0cf484f87d538ad.png" alt="setting" /></p>
 <blockquote>
 <p>注意若设置的是子域名, 则需要在DNS设置中加入CNAME规则, 使子域名指向<code>username.github.io</code></p>
 </blockquote>

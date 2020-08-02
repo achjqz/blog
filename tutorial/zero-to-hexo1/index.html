@@ -1,11 +1,11 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建Hexo博客 · 潇晗宇浩的博客</title><meta name="description" content="用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建Hexo博客 · 潇晗宇浩的博客</title><meta name="description" content="用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">零基础搭建Hexo博客</h1><div class="post-info">Apr 14, 2018<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p>用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松<br />
 本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page</p>
 <a id="more"></a>
 <h4 id="工具介绍及安装">工具介绍及安装</h4>
 <ol type="1">
-<li><code>Git</code> 版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a href="https://git-scm.com/" target="_blank" rel="noopener">官网安装</a></li>
-<li><code>node.js</code> 为hexo提供JavaScript环境 <a href="https://nodejs.org/" target="_blank" rel="noopener">官网安装</a></li>
+<li><code>Git</code> 版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a target="_blank" rel="noopener" href="https://git-scm.com/">官网安装</a></li>
+<li><code>node.js</code> 为hexo提供JavaScript环境 <a target="_blank" rel="noopener" href="https://nodejs.org/">官网安装</a></li>
 <li><code>Github Pages</code> Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装</li>
 </ol>
 <h4 id="hexo和主题安装">hexo和主题安装</h4>
@@ -15,7 +15,7 @@ hexo 主题定义了博客的界面布局, 颜色, 脚本等<br />
 hexo 将内容交给hexo 主题生成对应的排版</p>
 </blockquote>
 <ol type="1">
-<li><p>hexo 安装 <a href="https://hexo.io/" target="_blank" rel="noopener">官方文档</a></p>
+<li><p>hexo 安装 <a target="_blank" rel="noopener" href="https://hexo.io/">官方文档</a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">npm</span> install hexo-cli -g</span></code></pre></div></li>
 <li><p>生成默认博客</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">hexo</span> init blog</span>
@@ -45,7 +45,7 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">theme_config: </span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">   #评论区等配置, 按需添加</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">...</span></span></code></pre></div>
-<p>更多配置说明请查看<a href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md" target="_blank" rel="noopener">apollo</a>文档和参考<a href="https://github.com/achjqz/blog/blob/master/_config.yml" target="_blank" rel="noopener">我的配置</a></p></li>
+<p>更多配置说明请查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md">apollo</a>文档和参考<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/_config.yml">我的配置</a></p></li>
 <li><p>博客url配置</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> http://blog.xhyh.best</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="fu">root</span><span class="kw">:</span><span class="at"> /</span></span>

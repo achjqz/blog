@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次阿里云被攻击 · 潇晗宇浩的博客</title><meta name="description" content="之前申请了免费的阿里云学生机, 部署了服务后就没管了, 前几天阿里云连续两天发来了服务器有安全漏洞的安全警告邮件, 登上管理页一看, 还真的被hack了..."><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次阿里云被攻击 · 潇晗宇浩的博客</title><meta name="description" content="之前申请了免费的阿里云学生机, 部署了服务后就没管了, 前几天阿里云连续两天发来了服务器有安全漏洞的安全警告邮件, 登上管理页一看, 还真的被hack了..."><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">记一次阿里云被攻击</h1><div class="post-info">Apr 12, 2020<a class="tag-title" href="/tags/server/">#server</a><a class="tag-title" href="/tags/security/">#security</a></div><div class="post-content"><p>之前申请了免费的阿里云学生机, 部署了服务后就没管了, 前几天阿里云连续两天发来了安全警告邮件, 登上管理页一看, 还真的被hack了...</p>
 <a id="more"></a>
 <h4 id="事情开端">事情开端</h4>
@@ -10,15 +10,15 @@
 <p>于是便打开阿里云控制台查看情况</p>
 <h4 id="情况分析">情况分析</h4>
 <figure>
-<img src="https://pic.rmb.bdstatic.com/eaa8ce2a19586e83a0d76fca536d2cb7.png" alt="" /><figcaption>alert-1</figcaption>
+<img src="https://pic.rmb.bdstatic.com/eaa8ce2a19586e83a0d76fca536d2cb7.png" alt="alert-1" /><figcaption aria-hidden="true">alert-1</figcaption>
 </figure>
 <figure>
-<img src="https://pic.rmb.bdstatic.com/81adc00297cf1dae3a7d81d09458f259.png" alt="" /><figcaption>alert-2</figcaption>
+<img src="https://pic.rmb.bdstatic.com/81adc00297cf1dae3a7d81d09458f259.png" alt="alert-2" /><figcaption aria-hidden="true">alert-2</figcaption>
 </figure>
 <p>打开控制台后便看到了这两条警告</p>
 <p>第一条是显示被植入了挖矿程序</p>
 <p>第二条是显示在疯狂和外网IP通讯</p>
-<p>然后去<a href="https://github.com/docker-library/redis/issues/217" target="_blank" rel="noopener">网上</a>查了一下, 这个挖矿程序在<code>redis docker</code>中十分盛行, 当然不是镜像的锅, 而是创建<code>redis</code>时没有设密码, 而<code>redis</code>本身防护做得不好, 导致可以任意的文件读写, 造成了被黑客攻击, 植入程序</p>
+<p>然后去<a target="_blank" rel="noopener" href="https://github.com/docker-library/redis/issues/217">网上</a>查了一下, 这个挖矿程序在<code>redis docker</code>中十分盛行, 当然不是镜像的锅, 而是创建<code>redis</code>时没有设密码, 而<code>redis</code>本身防护做得不好, 导致可以任意的文件读写, 造成了被黑客攻击, 植入程序</p>
 <p>其实我在很早就知道无密码的<code>redis</code>有很大的安全风险, 原来用腾讯云部署应用时, 为了方便就没给<code>redis</code>上密码, 后来发现<code>redis</code>服务隔一天左右就会自动停止服务, 去查了一下发现是被攻击了, 后面自己使用<code>redis</code>都会上密码</p>
 <blockquote>
 <p>给这次开redis服务的同学一个教训了</p>
