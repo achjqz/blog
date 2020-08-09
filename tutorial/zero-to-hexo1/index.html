@@ -1,69 +1,59 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建Hexo博客 · 潇晗宇浩的博客</title><meta name="description" content="用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
-</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">零基础搭建Hexo博客</h1><div class="post-info">Apr 14, 2018<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p>用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松<br />
-本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page</p>
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建 Hexo 博客 · 潇晗宇浩的博客</title><meta name="description" content="用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">零基础搭建 Hexo 博客</h1><div class="post-info">Apr 14, 2018<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p>用Hexo + Github来搭建个人博客已经很普遍了, 正好Github action发布, 可以利用持续集成使得部署更加轻松 <br>本文从零开始, 搭建hexo博客并用Github Actions发布到Github Page</p>
 <a id="more"></a>
-<h4 id="工具介绍及安装">工具介绍及安装</h4>
-<ol type="1">
-<li><code>Git</code> 版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a target="_blank" rel="noopener" href="https://git-scm.com/">官网安装</a></li>
-<li><code>node.js</code> 为hexo提供JavaScript环境 <a target="_blank" rel="noopener" href="https://nodejs.org/">官网安装</a></li>
-<li><code>Github Pages</code> Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装</li>
+
+<h4 id="工具介绍及安装"><a href="#工具介绍及安装" class="headerlink" title="工具介绍及安装"></a>工具介绍及安装</h4><ol>
+<li><code>Git</code>  版本管理工具, 用于管理写的文章, 并和Github仓库建立连接, <a target="_blank" rel="noopener" href="https://git-scm.com/">官网安装</a></li>
+<li><code>node.js</code>  为hexo提供JavaScript环境 <a target="_blank" rel="noopener" href="https://nodejs.org/">官网安装</a></li>
+<li><code>Github Pages</code>   Github 官网提供的一个服务, 将博客部署到它上面, 避免自己购买服务器, 无需安装</li>
 </ol>
-<h4 id="hexo和主题安装">hexo和主题安装</h4>
-<blockquote>
-<p>hexo 和 hexo 主题的关系:<br />
-hexo 主题定义了博客的界面布局, 颜色, 脚本等<br />
-hexo 将内容交给hexo 主题生成对应的排版</p>
+<h4 id="hexo和主题安装"><a href="#hexo和主题安装" class="headerlink" title="hexo和主题安装"></a>hexo和主题安装</h4><blockquote>
+<p>hexo 和 hexo 主题的关系:<br>hexo 主题定义了博客的界面布局, 颜色, 脚本等<br>hexo 将内容交给hexo 主题生成对应的排版</p>
 </blockquote>
-<ol type="1">
+<ol>
 <li><p>hexo 安装 <a target="_blank" rel="noopener" href="https://hexo.io/">官方文档</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">npm</span> install hexo-cli -g</span></code></pre></div></li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>生成默认博客</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">hexo</span> init blog</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="bu">cd</span> blog</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">npm</span> install</span></code></pre></div></li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init blog</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>下载主题</p>
 <p>这里以<code>apollo</code>主题为例</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">npm</span> install --save hexo-renderer-pug<span class="kw">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a> <span class="ex">hexo-generator-feed</span> <span class="kw">\</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a> <span class="ex">hexo-generator-sitemap</span> <span class="kw">\</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a> <span class="ex">hexo-browsersync</span>  <span class="kw">\</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a> <span class="ex">hexo-generator-archive</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="ex">npm</span> i hexo-theme-apollo</span></code></pre></div>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-renderer-pug\</span><br><span class="line"> hexo-generator-feed \</span><br><span class="line"> hexo-generator-sitemap \</span><br><span class="line"> hexo-browsersync  \</span><br><span class="line"> hexo-generator-archive</span><br><span class="line">npm i hexo-theme-apollo</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>hexo 5.0 支持使用npm安装主题</p>
-</blockquote></li>
+</blockquote>
+</li>
 </ol>
-<h4 id="博客配置">博客配置</h4>
-<p>博客的配置主要都在<code>_config.yml</code>中</p>
-<ol type="1">
+<h4 id="博客配置"><a href="#博客配置" class="headerlink" title="博客配置"></a>博客配置</h4><p>博客的配置主要都在<code>_config.yml</code>中</p>
+<ol>
 <li><p>主题相关配置</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">...</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"># 修改主题名称</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">theme: apollo</span></span></code></pre></div>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="comment"># 修改主题名称</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">apollo</span></span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>hexo 5.0 主题的具体配置移到了_config.apollo.yml中 更多配置说明请查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md">apollo</a>文档和参考<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/_config.yml">我的配置</a></p>
-</blockquote></li>
+<p>hexo 5.0 主题的具体配置移到了_config.apollo.yml中<br>更多配置说明请查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md">apollo</a>文档和参考<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/_config.yml">我的配置</a></p>
+</blockquote>
+</li>
 <li><p>博客url配置</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> http://blog.xhyh.best</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="fu">root</span><span class="kw">:</span><span class="at"> /</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="fu">permalink</span><span class="kw">:</span><span class="at"> :category/:urlname/</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="fu">new_post_name</span><span class="kw">:</span><span class="at"> :year:month:day-:title.md</span></span></code></pre></div>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">http://blog.xhyh.best</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:category/:urlname/</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:year:month:day-:title.md</span></span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>为方便整理, 生成新文章会有时间前缀<br />
-而我们不希望在文章链接中包含时间, 这里使用了urlname, 需要在每篇文章头中添加这个变量</p>
-</blockquote></li>
+<p>为方便整理, 生成新文章会有时间前缀<br>而我们不希望在文章链接中包含时间, 这里使用了urlname, 需要在每篇文章头中添加这个变量</p>
+</blockquote>
+</li>
 </ol>
-<h4 id="常用命令">常用命令</h4>
-<ol type="1">
-<li><code>hexo clean</code> 清除缓存和生成的public文件夹</li>
-<li><code>hexo g</code> generator 生成public文件</li>
-<li><code>hexo s</code> server 本地预览, 加参数<code>--debug</code>可查看调试信息</li>
-<li><code>hexo d</code> deploy 部署到github</li>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ol>
+<li><code>hexo clean</code>  清除缓存和生成的public文件夹</li>
+<li><code>hexo g</code>  generator  生成public文件</li>
+<li><code>hexo s</code>  server     本地预览, 加参数<code>--debug</code>可查看调试信息</li>
+<li><code>hexo d</code>   deploy   部署到github</li>
 </ol>
-<h4 id="增加categorytag页面">增加category/tag页面</h4>
-<p>默认并没有category, tag页面, 需要在命令行中输入命令添加</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ex">hexo</span> new page category</span></code></pre></div>
-<p></br></p>
+<h4 id="增加category-tag页面"><a href="#增加category-tag页面" class="headerlink" title="增加category/tag页面"></a>增加category/tag页面</h4><p>默认并没有category, tag页面, 需要在命令行中输入命令添加</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page category</span><br></pre></td></tr></table></figure>
+
+</br>
+
 <p><a href="https://blog.xhyh.best/tutorial/zero-to-hexo2/">下一篇</a>将介绍如何使用 Github Actions 部署博客</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/tutorial/linux-ssh/">上一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '1ad726ece750d0552748',     
@@ -74,7 +64,7 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>

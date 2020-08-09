@@ -1,114 +1,41 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Hexo主题开发和修改-实践篇 · 潇晗宇浩的博客</title><meta name="description" content="上一篇中, 我们了解了Hexo主题的目录结构和基本的语法知识, 本文主要针对apollo主题进行开发和修改"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
-</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hexo主题开发和修改-实践篇</h1><div class="post-info">Apr 13, 2020<a class="tag-title" href="/tags/blog/">#blog</a><a class="tag-title" href="/tags/hexo-theme/">#hexo-theme</a></div><div class="post-content"><p><a href="https://blog.xhyh.best/tutorial/hexo-theme-theory/">上一篇</a>中, 我们了解了Hexo主题的目录结构和基本的语法知识, 本文主要针对<code>apollo</code>主题进行开发和修改</p>
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Hexo 主题开发和修改 --实践篇 · 潇晗宇浩的博客</title><meta name="description" content="上一篇中, 我们了解了Hexo主题的目录结构和基本的语法知识, 本文主要针对apollo主题进行开发和修改"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hexo 主题开发和修改 --实践篇</h1><div class="post-info">Apr 13, 2020<a class="tag-title" href="/tags/blog/">#blog</a><a class="tag-title" href="/tags/hexo-theme/">#hexo-theme</a></div><div class="post-content"><p><a href="https://blog.xhyh.best/tutorial/hexo-theme-theory/">上一篇</a>中, 我们了解了Hexo主题的目录结构和基本的语法知识, 本文主要针对<code>apollo</code>主题进行开发和修改</p>
 <a id="more"></a>
-<h3 id="布局修改">布局修改</h3>
-<h4 id="部分部局">部分部局</h4>
-<p>为了使布局能够复用, 所以将一个页面拆分成多个模块</p>
+
+<h3 id="布局修改"><a href="#布局修改" class="headerlink" title="布局修改"></a>布局修改</h3><h4 id="部分部局"><a href="#部分部局" class="headerlink" title="部分部局"></a>部分部局</h4><p>为了使布局能够复用, 所以将一个页面拆分成多个模块</p>
 <p><code>head</code> 网页的头部信息, 变量可通过Hexo中配置文件<code>config.xxx</code>获取</p>
 <p><code>nav</code> 导航栏信息, 可通过遍历主题配置<code>each value, key in theme.menu</code>获取</p>
 <p><code>layout</code> 基布局, 包含多个<code>block</code>可以被覆盖</p>
 <p><code>comment</code> 评论布局, 包括了所有支持的评论插件</p>
 <p><code>copyright</code> 底部布局</p>
 <p><code>scripts</code> 页面所需的js</p>
-<h4 id="博客页面">博客页面</h4>
-<p>主页: 继承至<code>layout</code>布局, 包含三大部分</p>
-<pre class="pug"><code>extends partial/layout
+<h4 id="博客页面"><a href="#博客页面" class="headerlink" title="博客页面"></a>博客页面</h4><p>主页: 继承至<code>layout</code>布局, 包含三大部分</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extends</span> partial/layout</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    include mixins/post</span><br><span class="line">    +posts()</span><br><span class="line"></span><br><span class="line">block pagination</span><br><span class="line">    include mixins/paginator</span><br><span class="line">    +home()</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial/copyright</span><br></pre></td></tr></table></figure>
 
-block container
-    include mixins/post
-    +posts()
-
-block pagination
-    include mixins/paginator
-    +home()
-
-block copyright
-    include partial/copyright</code></pre>
 <p>其中<code>posts()</code>是混入的函数</p>
-<pre class="pug"><code>mixin posts()
-    ul.home.post-list
-        - page.posts.each(function (item) &amp;#123;
-            li.post-list-item
-                article.post-block
-                    h2.post-title
-                        a.post-title-link(href= url_for(item.path))
-                            != item.title
-                    +postInfo(item)
-                    .post-content
-                        != item.excerpt
-                    a.read-more(href= url_for(item.path))!= __(&#39;more&#39;)
-        - &amp;#125;)
-mixin postInfo(item)
-    .post-info
-        != full_date(item.date, &#39;ll&#39;)
-        if (item.tags &amp;&amp; (is_home() || is_post())) 
-            for tag in item.tags.toArray()
-                a.tag-title(href=url_for(tag.path))
-                    != &#39;#&#39; + tag.name        </code></pre>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mixin posts()</span><br><span class="line">    ul.home.post-list</span><br><span class="line">        - page.posts.each(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">            li.post-list-item</span><br><span class="line">                article.post-block</span><br><span class="line">                    h2.post-title</span><br><span class="line">                        a.post-title-link(href= url_for(item.path))</span><br><span class="line">                            != item.title</span><br><span class="line">                    +postInfo(item)</span><br><span class="line">                    .post-content</span><br><span class="line">                        != item.excerpt</span><br><span class="line">                    a.read-more(href= url_for(item.path))!= __(<span class="string">&#x27;more&#x27;</span>)</span><br><span class="line">        - &#125;)</span><br><span class="line">mixin postInfo(item)</span><br><span class="line">    .post-info</span><br><span class="line">        != full_date(item.date, <span class="string">&#x27;ll&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> (item.tags &amp;&amp; (is_home() || is_post()))</span><br><span class="line">            <span class="keyword">for</span> tag <span class="keyword">in</span> item.tags.toArray()</span><br><span class="line">                a.tag-title(href=url_for(tag.path))</span><br><span class="line">                    != <span class="string">&#x27;#&#x27;</span> + tag.name</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>如果想修改, 比如给文章加上tag, 就可以自行在<code>postInfo</code>函数中加入对应的标签</p>
 </blockquote>
 <p>文章页: 和<code>index</code>页面基本一样, 但多了标题和描述block的覆盖</p>
-<pre class="pug"><code>extends partial/layout
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extends</span> partial/layout</span><br><span class="line"></span><br><span class="line">block site_title</span><br><span class="line">    != page.title + <span class="string">&quot; · &quot;</span> + config.title</span><br><span class="line"></span><br><span class="line">block description</span><br><span class="line">    - <span class="keyword">var</span> desc = page.desc || page.title + <span class="string">&#x27; - &#x27;</span> + config.author;</span><br><span class="line">    meta(name=<span class="string">&quot;description&quot;</span>, content=desc)</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    include mixins/post</span><br><span class="line">    +post(page)</span><br><span class="line"></span><br><span class="line">block pagination</span><br><span class="line">    include mixins/paginator</span><br><span class="line">    +post()</span><br><span class="line">    include partial/comment</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial/copyright</span><br></pre></td></tr></table></figure>
 
-block site_title
-    != page.title + &quot; · &quot; + config.title
-
-block description
-    - var desc = page.desc || page.title + &#39; - &#39; + config.author;
-    meta(name=&quot;description&quot;, content=desc)
-
-block container
-    include mixins/post
-    +post(page)
-
-block pagination
-    include mixins/paginator
-    +post()
-    include partial/comment
-
-block copyright
-    include partial/copyright</code></pre>
 <p>自定义页面: 需要在<code>block container</code>中判断页面类型实现不同的内容</p>
-<pre class="pug"><code>extends partial/layout
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extends</span> partial/layout</span><br><span class="line"></span><br><span class="line">block container</span><br><span class="line">    <span class="keyword">if</span> page.type === <span class="string">&#x27;category&#x27;</span></span><br><span class="line">      .category  </span><br><span class="line">          h2.title</span><br><span class="line">              != page.title</span><br><span class="line">          != list_categories()</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> page.type === <span class="string">&#x27;friends&#x27;</span></span><br><span class="line">      .flink</span><br><span class="line">        <span class="keyword">if</span> site.data.link</span><br><span class="line">           ...</span><br><span class="line">block pagination</span><br><span class="line">    include mixins/paginator</span><br><span class="line">    +home()</span><br><span class="line"></span><br><span class="line">block copyright</span><br><span class="line">    include partial/copyright</span><br></pre></td></tr></table></figure>
 
-block container
-    if page.type === &#39;category&#39;
-      .category  
-          h2.title 
-              != page.title
-          != list_categories()
-    else if page.type === &#39;friends&#39;
-      .flink
-        if site.data.link
-           ...
-block pagination
-    include mixins/paginator
-    +home()
-
-block copyright
-    include partial/copyright</code></pre>
 <blockquote>
 <p>我这里使用<code>page.type</code>判断页面类型, 这样需要在对应页面<code>index.md</code>中添加<code>type</code>变量</p>
 </blockquote>
-<h3 id="样式修改">样式修改</h3>
-<h4 id="根样式">根样式</h4>
-<p>定义一个根样式, <code>gulp</code>只编译这个文件, 更方便管理, 其他样式通过<code>@import</code>引入</p>
-<pre class="scss"><code>@charset &quot;utf-8&quot;;
+<h3 id="样式修改"><a href="#样式修改" class="headerlink" title="样式修改"></a>样式修改</h3><h4 id="根样式"><a href="#根样式" class="headerlink" title="根样式"></a>根样式</h4><p>定义一个根样式, <code>gulp</code>只编译这个文件, 更方便管理, 其他样式通过<code>@import</code>引入</p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@charset</span> <span class="string">&quot;utf-8&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;_partial/normalize&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;_partial/base&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;_partial/header&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@import</span> url(<span class="string">&#x27;https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-@import &quot;_partial/normalize&quot;;
-@import &quot;_partial/base&quot;;
-@import &quot;_partial/header&quot;;
-
-@import url(&#39;https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&#39;);</code></pre>
-<h4 id="部分样式">部分样式</h4>
-<p>根据每个部分布局定义部分样式, 再在根样式中引入</p>
+<h4 id="部分样式"><a href="#部分样式" class="headerlink" title="部分样式"></a>部分样式</h4><p>根据每个部分布局定义部分样式, 再在根样式中引入</p>
 <p>在命令行中运行<code>gulp</code>命令即可监控样式的更改, 实时编译</p>
 <blockquote>
 <p>在chrome中, 右键-检查想修改的部分, 可快速定位css信息和debug</p>
 </blockquote>
-<h3 id="配置修改">配置修改</h3>
-<p>可根据自身需求在<code>_config</code>文件中进行修改, 可以新增<code>menu</code>菜单或新增变量</p>
+<h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><p>可根据自身需求在<code>_config</code>文件中进行修改, 可以新增<code>menu</code>菜单或新增变量</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/tutorial/windows-wsl2-env/">上一篇</a><a class="next" href="/other/aliyun-hacked/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '1ad726ece750d0552748',     
     clientSecret: '6917691391883046d263b52a7107fab68e457194',     
@@ -118,7 +45,7 @@ block copyright
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 <a href="http://blog.xhyh.best">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>
