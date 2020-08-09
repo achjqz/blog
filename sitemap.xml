@@ -4,113 +4,264 @@
   <url>
     <loc>http://blog.xhyh.best/study/memory-mapping/</loc>
     
-    <lastmod>2020-08-02T04:45:55.000Z</lastmod>
+    <lastmod>2020-08-02</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/wsl2-gui/</loc>
     
-    <lastmod>2020-05-12T09:52:17.000Z</lastmod>
+    <lastmod>2020-05-12</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/study/assembly-function-call-32/</loc>
     
-    <lastmod>2020-04-29T03:17:29.000Z</lastmod>
+    <lastmod>2020-04-29</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/study/assembly-function-call-64/</loc>
     
-    <lastmod>2020-04-28T03:19:33.000Z</lastmod>
+    <lastmod>2020-04-28</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/mpv-config/</loc>
     
-    <lastmod>2020-04-27T01:36:19.000Z</lastmod>
+    <lastmod>2020-04-27</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/study/assembly-instructions/</loc>
     
-    <lastmod>2020-04-26T03:18:26.000Z</lastmod>
+    <lastmod>2020-04-26</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/windows-wsl2-env/</loc>
     
-    <lastmod>2020-04-14T01:09:44.000Z</lastmod>
+    <lastmod>2020-04-14</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/hexo-theme-dev/</loc>
     
-    <lastmod>2020-04-13T00:32:54.000Z</lastmod>
+    <lastmod>2020-04-13</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/other/aliyun-hacked/</loc>
     
-    <lastmod>2020-04-12T02:46:23.000Z</lastmod>
+    <lastmod>2020-04-12</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/hexo-theme-theory/</loc>
     
-    <lastmod>2020-04-11T03:37:19.000Z</lastmod>
+    <lastmod>2020-04-11</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/friends/</loc>
     
-    <lastmod>2020-04-10T13:13:44.000Z</lastmod>
+    <lastmod>2020-04-10</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/zero-to-hexo2/</loc>
     
-    <lastmod>2020-04-10T02:43:08.000Z</lastmod>
+    <lastmod>2020-04-10</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/talk/hello-new-blog/</loc>
     
-    <lastmod>2020-04-08T10:50:46.000Z</lastmod>
+    <lastmod>2020-04-08</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/categories/</loc>
     
-    <lastmod>2020-04-07T16:16:38.000Z</lastmod>
+    <lastmod>2020-04-07</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/linux-ssh/</loc>
     
-    <lastmod>2018-09-28T08:25:43.000Z</lastmod>
+    <lastmod>2018-09-28</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.xhyh.best/tutorial/zero-to-hexo1/</loc>
     
-    <lastmod>2018-04-14T14:18:32.000Z</lastmod>
+    <lastmod>2018-04-14</lastmod>
     
+  </url>
+  
+
+  <url>
+    <loc>http://blog.xhyh.best/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/hexo/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/blog/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/linux/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/ssh/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/ssh-agent/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/summary/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/hexo-theme/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/server/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/security/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/windows/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/wsl2/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/assembly/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/os/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/mpv/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/software/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/tags/mmap/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>http://blog.xhyh.best/categories/tutorial/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/categories/talk/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/categories/other/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.xhyh.best/categories/study/</loc>
+    <lastmod>2020-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
   </url>
   
 </urlset>

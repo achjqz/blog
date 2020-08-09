@@ -25,14 +25,12 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <p>这里以<code>apollo</code>主题为例</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">npm</span> install --save hexo-renderer-pug<span class="kw">\</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a> <span class="ex">hexo-generator-feed</span> <span class="kw">\</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a> <span class="ex">hexo-generator-sitemap</span> <span class="dt">\ </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a> <span class="ex">hexo-generator-sitemap</span> <span class="kw">\</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a> <span class="ex">hexo-browsersync</span>  <span class="kw">\</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a> <span class="ex">hexo-generator-archive</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># 将主题添加为子模块, clone博客仓库时需加 --recursive 参数拉取所有子模块</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="fu">git</span> init</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="fu">git</span> submodule add https://github.com/achjqz/hexo-theme-apollo.git themes/apollo</span></code></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a> <span class="ex">hexo-generator-archive</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="ex">npm</span> i hexo-theme-apollo</span></code></pre></div>
 <blockquote>
-<p>若使用git clone拉取主题, 则需要删除themes/apollo/.git文件才能使git正常追踪apollo内的文件</p>
+<p>hexo 5.0 支持使用npm安装主题</p>
 </blockquote></li>
 </ol>
 <h4 id="博客配置">博客配置</h4>
@@ -41,11 +39,10 @@ hexo 将内容交给hexo 主题生成对应的排版</p>
 <li><p>主题相关配置</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">...</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"># 修改主题名称</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">theme: apollo</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">theme_config: </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">   #评论区等配置, 按需添加</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">...</span></span></code></pre></div>
-<p>更多配置说明请查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md">apollo</a>文档和参考<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/_config.yml">我的配置</a></p></li>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">theme: apollo</span></span></code></pre></div>
+<blockquote>
+<p>hexo 5.0 主题的具体配置移到了_config.apollo.yml中 更多配置说明请查看<a target="_blank" rel="noopener" href="https://github.com/achjqz/hexo-theme-apollo/blob/master/docs/doc-zh.md">apollo</a>文档和参考<a target="_blank" rel="noopener" href="https://github.com/achjqz/blog/blob/master/_config.yml">我的配置</a></p>
+</blockquote></li>
 <li><p>博客url配置</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> http://blog.xhyh.best</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="fu">root</span><span class="kw">:</span><span class="at"> /</span></span>
