@@ -1,5 +1,5 @@
 ---
-title: 用Github Actions将Hexo博客部署到Github Page
+title: 用 Github Actions 将 Hexo 博客部署到 Github Page
 date: 2020-04-10 10:43:08
 urlname: zero-to-hexo2
 tags: 
@@ -19,33 +19,32 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 `Github Actions` 是 Github 推出的一款持续集成工具, 这里我们可以用来发布博客到`Github Page`
 
 1. 新建workflow文件
-   
+
    只有当项目中`.github/workflows`目录下存在以`.yml`结尾的配置才会触发`Github Actions`
-   
+
    ``` bash
    cd Blog
    mkdir -p .github/workflows
-   touch .github/workflows/deploy.yml 
+   touch .github/workflows/deploy.yml
    ```
 
-   
 2. 配置`deploy.yml`文件
 
-   ``` yml
+  ``` yml
    # workflow name
    name: Deploy To Github Pages
-   
+
    # 当有 push 到仓库和外部触发的时候就运行
    on: [push, repository_dispatch]
-   
+
    # ACCESS_TOKEN
    jobs:
-     deploy: 
+     deploy:
        name: Deploy Hexo Public To Pages
        runs-on: ubuntu-latest 
        env:
-         TZ: Asia/Shanghai    
-   
+         TZ: Asia/Shanghai
+
        steps:
        # check it to your workflow can access it
        # from: https://github.com/actions/checkout
@@ -54,50 +53,42 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
          with:
            persist-credentials: false
            submodules: true
-   
+
        # from: https://github.com/actions/setup-node  
        - name: Setup Node.js 10.x 🔧
          uses: actions/setup-node@master
          with:
            node-version: "10.x"
-   
-       - name: Install pandoc 🔧
-         run: |
-           curl -s https://api.github.com/repos/jgm/pandoc/releases/latest | grep "browser_download_url.   *deb" | cut -d '"' -f 4 | wget -qi -
-           sudo dpkg -i *.deb
-           
+
        - name: Setup Hexo Dependencies 🔧
          run: |
            npm install hexo-cli -g
            npm install
            npm run build
-   
-       # from https://github.com/marketplace/actions/deploy-to-github-pages   
+
+       # from https://github.com/marketplace/actions/deploy-to-github-pages
        - name: Deploy 🚀
          uses: JamesIves/github-pages-deploy-action@releases/v3
          with:
-           ACCESS_TOKEN: ${ { secrets.ACCESS_TOKEN } } # 删除大括号中间空格
+           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
            BRANCH: gh-pages # The branch the action should deploy to.
            FOLDER: public # The folder the action should deploy.
-           COMMIT_MESSAGE: ${ { github.event.head_commit.message } } # 删除大括号中间空格
-   ```
-  最新版可以查看[我的配置](https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml)
+           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+  ```
 
+  最新版可以查看[我的配置](https://github.com/achjqz/blog/blob/master/.github/workflows/deploy.yml)
 3. 流程介绍
 
    根据上面的配置可以看到主要分为4步
 
-   - Checkout 拉取你的博客, 默认拉取本项目
-   - 安装Node环境
-   - 安装Hexo依赖
-   - 部署到Github Page
-
-   > 由于我的博客使用`pandoc`进行渲染, 所以还多了一步安装`pandoc`环境
-
+- Checkout 拉取你的博客, 默认拉取本项目
+- 安装Node环境
+- 安装Hexo依赖
+- 部署到Github Page
 
 #### 生成ssh私钥
 
-有了ssh私钥可以实现免密码将博客推送到Github 
+有了ssh私钥可以实现免密码将博客推送到Github
 
 具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.best/tutorial/linux-ssh/), 只用完成第一部分ssh生成
 
@@ -127,7 +118,6 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
    ![secret](https://pic.rmb.bdstatic.com/5b364db983b09727ee07df2a9dc54a99.png)
 4. 根据提示push项目
 
-
 #### 查看`Github Actions`工作情况
 
 当push项目后, 在Actions选项中能看到已经自动运行部署
@@ -150,5 +140,3 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 2. 写作
 3. `git add`,  `git commit`, `git push`
 4. `Github Actions` 自动部署
-
-

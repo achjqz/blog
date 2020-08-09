@@ -1,5 +1,5 @@
 ---
-title: Windows下使用wsl2打造极致开发环境
+title: Windows 下使用 wsl2 打造极致开发环境
 date: 2020-04-14 09:09:44
 urlname: windows-wsl2-env
 tags: 
@@ -111,7 +111,6 @@ alias pc='proxychains4 -q -f ~/.proxychains.conf'
 经过测试, 即使在`wsl2`设置了`http_proxy`环境变量也没办法生效(主配置已检测到代理), 需要手动设置才能生效
 ![vscode-config](https://pic.rmb.bdstatic.com/ff4e30a30dd6be1ee200ef58054b83e9.png)
 
-
 #### 其他配置
 
 大多数软件都能使用`wsl2`替代, 如`git`, `c++`, `python`, `golang`等
@@ -124,7 +123,7 @@ alias pc='proxychains4 -q -f ~/.proxychains.conf'
 
 #### 坑
 
-`wsl2`唯一的缺点是无法自动缩进磁盘空间, 当突然下载大文件后又删除后, 虚拟机占用空间并不会减少, 只会持续扩张. 目前解决办法是磁盘分区, 后续官网应该有更好的解决方法 
+`wsl2`唯一的缺点是无法自动缩进磁盘空间, 当突然下载大文件后又删除后, 虚拟机占用空间并不会减少, 只会持续扩张. 目前解决办法是磁盘分区, 后续官方应该有更好的解决方法
 
 #### 总结
 

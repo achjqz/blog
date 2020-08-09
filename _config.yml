@@ -45,11 +45,11 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: false
+  enable: true
   line_number: false
-  auto_detect: true
+  auto_detect: false
   tab_replace: ''
-  wrap: false
+  wrap: true
   hljs: false
 
 # Home page setting

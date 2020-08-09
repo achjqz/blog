@@ -1,6 +1,7 @@
 menu:
   GitHub: https://github.com/achjqz
   Rss: /rss2.xml
+favicon: images/logo.png
 ga: UA-117536047-1
 gitalk:
   on: true
