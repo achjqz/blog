@@ -1,0 +1,11 @@
+menu:
+  GitHub: https://github.com/achjqz
+  Rss: /rss2.xml
+ga: UA-117536047-1
+gitalk:
+  on: true
+  owner: achjqz
+  repo: blog
+  admin: ['achjqz']
+  clientID: 1ad726ece750d0552748
+  clientSecret: 6917691391883046d263b52a7107fab68e457194
