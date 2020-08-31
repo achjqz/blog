@@ -64,7 +64,7 @@ https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/right.r
     fi
     ```
 
-    > 由于我使用了oh-my-zsh, 每次安装会覆盖原有的.zshrc, 所以我的所有关于bash配置都写在~/.profile下, 并在.zshrc中使用source .profile加载
+    > 由于我使用了oh-my-zsh, 每次安装会覆盖原有的.zshrc, 所以我的所有关于bash配置都写在~/.profile下, 并在.zshrc中使用source .profile加载, 更多配置可以参考[.profile文件](https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nrnfoiwu5i48/b/anan/o/.profile)
 3. 配置默认使用`vim`作为可视化编辑器
 
     ```bash
