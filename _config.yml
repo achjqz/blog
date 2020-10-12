@@ -100,6 +100,13 @@ feed:
 ## Themes: https://hexo.io/themes/
 theme: apollo
 
+markdown:
+  plugins:
+    - markdown-it-abbr
+    - name: markdown-it-container
+      options: tip
+    - markdown-it-footnote
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

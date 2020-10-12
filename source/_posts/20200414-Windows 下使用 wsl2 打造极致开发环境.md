@@ -100,6 +100,8 @@ sed -i '/socks5/d' ~/.proxychains.conf
 # 添加新的socks5配置
 sed -i '$a socks5 '${WIN_IP}' 7891' ~/.proxychains.conf
 alias pc='proxychains4 -q -f ~/.proxychains.conf'
+# 在使用sudo时同时使用'pc' proxychains的alias
+alias sudo='sudo '
 ```
 
 这样每次启动都会寻找正确的ip地址, 并设置好给`proxychains4`
