@@ -1,58 +1,86 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 区分进程, 线程和协程 · 潇晗宇浩的博客</title><meta name="description" content="在日常使用中, 其实能很明显感觉进程, 线程和协程是完全不一样的概念. 但一旦深入到底层, 这三者又有些难以区分, 本篇从本质上看看三者的区别"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.1.1"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 区分进程, 线程和协程 · 潇晗宇浩的博客</title><meta name="description" content="在日常使用中, 其实能很明显感觉进程, 线程和协程是完全不一样的概念. 但一旦深入到底层, 这三者又有些难以区分, 本篇从本质上看看三者的区别"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">区分进程, 线程和协程</h1><div class="post-info">Aug 30, 2020<a class="tag-title" href="/tags/os/">#os</a><a class="tag-title" href="/tags/process/">#process</a><a class="tag-title" href="/tags/thread/">#thread</a><a class="tag-title" href="/tags/coroutine/">#coroutine</a></div><div class="post-content"><p>在日常使用中, 其实能很明显感觉进程, 线程和协程是完全不一样的概念. 但一旦深入到底层, 这三者又有些难以区分, 本篇从本质上看看三者的区别</p>
 <a id="more"></a>
-
-<h3 id="关于线程说明"><a href="#关于线程说明" class="headerlink" title="关于线程说明"></a>关于线程说明</h3><p>NPTL(Native POSIX Thread Library)，是 Linux 2.6 引入的新的线程库实现，符合 POSIX 在线程方面的标准，用来替代旧的 LinuxThreads 线程库。不管是NPTL还是LinuxThreads，用户创建的每个线程都对应着一个内核态的线程。若无特殊说明，这里的线程特指操作系统内核线程</p>
-<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><p>之所以将进程和线程放一块是因为在 Linux 里面，无论是进程，还是线程，到了内核里面，统一都叫任务<br>（Task），由一个统一的结构<code>task_struct</code>进行管理</p>
+<h3 id="关于线程说明">关于线程说明</h3>
+<p><abbr title="Native POSIX Thread Library">NPTL</abbr><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>是 Linux 2.6 引入的新的线程库实现，符合 POSIX 在线程方面的标准，用来替代旧的 LinuxThreads 线程库。不管是NPTL还是LinuxThreads，用户创建的每个线程都对应着一个内核态的线程。若无特殊说明，这里的线程特指操作系统内核线程</p>
+<h3 id="进程和线程">进程和线程</h3>
+<p>之所以将进程和线程放一块是因为在 Linux 里面，无论是进程，还是线程，到了内核里面，统一都叫任务<br>
+（Task），由一个统一的结构<code>task_struct</code>进行管理<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p><img src="https://pic.rmb.bdstatic.com/bjh/43699624f35d6daf890e3a68b948e518.png@s_0,w_2000" alt="image-20200830195551210"></p>
 <blockquote>
 <p>通常所说的pcb在linux中就是task_struct</p>
 </blockquote>
-<h4 id="任务ID"><a href="#任务ID" class="headerlink" title="任务ID"></a>任务ID</h4><p>那么如何区分在不同进程的线程呢？</p>
+<h4 id="任务ID">任务ID</h4>
+<p>那么如何区分在不同进程的线程呢？</p>
 <p><code>task_struct</code>中有如下字段定义任务ID</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pid_t</span> pid;</span><br><span class="line"><span class="keyword">pid_t</span> tgid;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">group_leader</span>;</span></span><br></pre></td></tr></table></figure>
-
-<p>其中pid 是 process id，tgid是 thread <strong>group</strong> ID<br>若一个进程只有主线程， pid，tgid，group_leader 均为自己<br>若一个进程创建了其他线程，线程有自己的 pid，tgid 是进程主线程的 pid，group_leader 也指向主线程</p>
+<p>其中pid 是 process id，tgid是 thread <strong>group</strong> ID<br>
+若一个进程只有主线程， pid，tgid，group_leader 均为自己<br>
+若一个进程创建了其他线程，线程有自己的 pid，tgid 是进程主线程的 pid，group_leader 也指向主线程</p>
 <p>有了tgid，在任务切换的时候就知道是 线程上下文切换 还是 进程上下文切换了</p>
-<h4 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h4><p>进程是通过<code>fork</code>系统调用创建，而线程是<code>pthread_create</code>，最终为什么都是task了呢？</p>
+<h4 id="创建过程">创建过程</h4>
+<p>进程是通过<code>fork</code>系统调用创建，而线程是<code>pthread_create</code>，最终为什么都是task了呢？</p>
 <ul>
-<li><p>进程创建完全通过系统调用实现</p>
-<p>  <code>fork</code>系统调用的过程主要有两个重要的事件</p>
+<li>
+<p>进程创建完全通过系统调用实现</p>
+<p><code>fork</code>系统调用的过程主要有两个重要的事件</p>
 <ol>
-<li><p>调用sys_fork-&gt;do_fork，将<code>task_struct</code>结构复制一份并且初始化</p>
+<li>
+<p>调用sys_fork-&gt;do_fork，将<code>task_struct</code>结构复制一份并且初始化</p>
 <p><img src="https://pic.rmb.bdstatic.com/bjh/3dd3bb8b3bb198ae94ef4f9089821786.png" alt="image-20200830212651155"></p>
 </li>
-<li><p>试图唤醒新创建的子进程</p>
+<li>
+<p>试图唤醒新创建的子进程</p>
 </li>
 </ol>
 </li>
-<li><p>线程创建是由内核态和用户态合作完成的<br>  pthread_create 不是一个系统调用，而是 Glibc 库(nptl/pthread_create.c中)的一个函数<br>  在用户态也有一个用于维护线程的结构(pthread)</p>
-<p>  大致的步骤如下:</p>
+<li>
+<p>线程创建是由内核态和用户态合作完成的<br>
+pthread_create 不是一个系统调用，而是 Glibc 库(nptl/pthread_create.c中)的一个函数<br>
+在用户态也有一个用于维护线程的结构(pthread)</p>
+<p>大致的步骤如下:</p>
 <ol>
 <li>用户态创建线程栈，存放在堆中(通过mmap分配)</li>
-<li>系统调用clone-&gt;do_fork复制 task_struct<blockquote>
+<li>系统调用clone-&gt;do_fork复制 task_struct
+<blockquote>
 <p>这里复制的时候由于clone_flags的影响，要么只是引用计数增加，要么直接指向原来的结构</p>
 </blockquote>
 </li>
-<li>用户态执行通用的 start_thread -&gt; 调用用户指定函数<blockquote>
+<li>用户态执行通用的 start_thread -&gt; 调用用户指定函数
+<blockquote>
 <p>和创建进程不同，clone在子线程返回时，我们还需要修改栈指针和指令指针，栈顶指针应该指向新线程的栈，指令指针应该指向线程将要执行的那个函数</p>
 </blockquote>
 </li>
 </ol>
 </li>
 </ul>
-<h4 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h4><ol>
+<h4 id="上下文切换">上下文切换</h4>
+<ol>
 <li>前后两个task属于不同进程。资源不共享，判断为进程上下文切换，需要切换进程空间(虚拟内存)，也需要切换寄存器和 CPU上下文。</li>
 <li>第二种，前后两个线程属于同一个进程。资源不共享，判断为进程上下文切换，只用切换寄存器和 CPU上下文。</li>
 </ol>
-<h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><p>协程被称为‘轻量级的线程’，但我觉得是有点误导，因为协程和内核线程毫无关系</p>
+<h3 id="协程">协程</h3>
+<p>协程被称为‘轻量级的线程’，但我觉得是有点误导，因为协程和内核线程毫无关系</p>
 <p>协程应该被叫做‘用户态的线程’比较好理解，也就是说，协程是一个能挂起并且一段时间后恢复执行的东西，并且不需要操作系统调度的参与，完全由各个语言自己实现</p>
 <p>根据具体实现大致可分为</p>
 <ol>
 <li>有栈协程(Stackful Coroutine)：每一个协程都会有自己的调用栈，类似于线程的调用栈，这种情况下的协程实现其实很大程度上接近线程，主要不同体现在调度上。如 goroutine</li>
 <li>无栈协程(Stackless Coroutine)：协程没有自己的调用栈。如 JavaScript 、 C# 和 Python</li>
 </ol>
-<p>无栈协议栈是由CPS(continuation-passing-style)来保存上下文，这里不做过多介绍</p>
+<p>无栈协议栈是由CPS(continuation-passing-style)来保存上下文，这里不做过多介绍<br>
+<br></p>
+<h3>转载申请</h3>
+<p><a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by/4.0/"><img alt="知识共享许可协议" style="zoom: 25%;display: inline" src="/images/by.png"></a></p>
+<p>本文<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可，转载时请注明原文链接</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Wikipedia: Native POSIX Thread Library <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library">https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>趣谈Linux操作系统: <a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/164">https://time.geekbang.org/column/intro/164</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 </div></article></div></main><footer><div class="paginator"><a class="next" href="/talk/internship-tencent/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '1ad726ece750d0552748',     
     clientSecret: '6917691391883046d263b52a7107fab68e457194',     

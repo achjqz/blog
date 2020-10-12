@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 汇编入门之 x86 和 x86_64 函数调用对比 --64位篇 · 潇晗宇浩的博客</title><meta name="description" content="原来一直对64位程序的汇编函数调用比较熟悉, 32位程序的函数调用总觉得十分复杂. 本文主要对64位程序在不同优化级别下的汇编函数调用实现情况, 后篇再结合32位进行对比分析"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.1.1"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 汇编入门之 x86 和 x86_64 函数调用对比 --64位篇 · 潇晗宇浩的博客</title><meta name="description" content="原来一直对64位程序的汇编函数调用比较熟悉, 32位程序的函数调用总觉得十分复杂. 本文主要对64位程序在不同优化级别下的汇编函数调用实现情况, 后篇再结合32位进行对比分析"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://blog.xhyh.best/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">汇编入门之 x86 和 x86_64 函数调用对比 --64位篇</h1><div class="post-info">Apr 28, 2020<a class="tag-title" href="/tags/assembly/">#assembly</a><a class="tag-title" href="/tags/os/">#os</a></div><div class="post-content"><p>原来一直对64位程序的汇编函数调用比较熟悉, 32位程序的函数调用总觉得十分复杂. 本文主要对64位程序在不同优化级别下的汇编函数调用实现情况, 后篇再结合32位进行对比分析</p>
 <a id="more"></a>
-
-<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><h4 id="汇编格式"><a href="#汇编格式" class="headerlink" title="汇编格式"></a>汇编格式</h4><p>如果对汇编指令还不熟悉可以看<a href="https://blog.xhyh.best/study/assembly-instructions/">上一篇</a>文章, 本文还是采用<code>AT&amp;T</code>汇编格式</p>
-<h4 id="优化级别"><a href="#优化级别" class="headerlink" title="优化级别"></a>优化级别</h4><p>在编译时, 可以指定代码的优化级别, 大致优化级别有如下几个</p>
+<h3 id="说明">说明</h3>
+<h4 id="汇编格式">汇编格式</h4>
+<p>如果对汇编指令还不熟悉可以看<a href="https://blog.xhyh.best/study/assembly-instructions/">上一篇</a>文章, 本文还是采用<code>AT&amp;T</code>汇编格式</p>
+<h4 id="优化级别">优化级别</h4>
+<p>在编译时, 可以指定代码的优化级别, 大致优化级别有如下几个</p>
 <ul>
 <li>-O (相当于 -O1)</li>
 <li>-O0 (不优化, 默认级别)</li>
@@ -18,51 +20,55 @@
 <p>如果优化级别太高会出现和源代码完全不符的情况, 如函数调用会被优化掉, 出现汇编中没有调用函数的现象</p>
 </blockquote>
 <p>本文主要分析不优化和<code>-Og</code>两种情况</p>
-<h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><p>为了简便, 下面分析将采用以下源代码</p>
+<h4 id="源代码">源代码</h4>
+<p>为了简便, 下面分析将采用以下源代码</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">return</span> a + b  + <span class="built_in">array</span>[<span class="number">2</span>] + <span class="built_in">array</span>[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[] = &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">7</span>, b = <span class="number">8</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sum: %d\n&quot;</span>, add(a, b));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, <span class="built_in">array</span>[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="x86-64程序分析"><a href="#x86-64程序分析" class="headerlink" title="x86_64程序分析"></a>x86_64程序分析</h3><h4 id="Og优化级别下"><a href="#Og优化级别下" class="headerlink" title="-Og优化级别下"></a>-Og优化级别下</h4><p>首先看<code>add</code>函数的汇编代码(已省去无关指令)</p>
+<h3 id="x86-64程序分析">x86_64程序分析</h3>
+<h4 id="Og优化级别下">-Og优化级别下</h4>
+<p>首先看<code>add</code>函数的汇编代码(已省去无关指令)</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">subq <span class="number">$56</span>, %rsp</span><br><span class="line">/* 栈保护代码</span><br><span class="line">movl  <span class="number">$40</span>, %edx</span><br><span class="line"><span class="keyword">movq</span>  %fs:(%rdx), %rax</span><br><span class="line"><span class="keyword">movq</span>  %rax, <span class="number">40</span>(%rsp)</span><br><span class="line">*/</span><br><span class="line">xorl  %eax, %eax</span><br><span class="line">addl  %esi, %edi      // a + b</span><br><span class="line">addl  <span class="number">8</span>(%rsp), %edi   // array[<span class="number">2</span>]</span><br><span class="line">movl  %edi, %eax</span><br><span class="line">addl  <span class="number">4</span>(%rsp), %eax   // array[<span class="number">1</span>]</span><br><span class="line">/* 栈保护代码</span><br><span class="line"><span class="keyword">movq</span>  <span class="number">40</span>(%rsp), %rcx</span><br><span class="line">xorq  %fs:(%rdx), %rcx</span><br><span class="line"><span class="keyword">jne</span>  .L4</span><br><span class="line">*/</span><br><span class="line">addq  <span class="number">$56</span>, %rsp</span><br><span class="line"><span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>可以看到函数中存在栈保护代码, 这里暂且不说, 与函数调用关系不大, 后面的代码中将省略</p>
 </blockquote>
-<p>首先看出程序会计算出<code>add</code>函数内需要的栈空间, 这里我们开了长度为10的<code>int</code>数组, 需要40字节, 栈保护需要8字节,<br>在使用<code>call</code>调用函数时已经将返回地址8字节压入栈中, 为了使栈内存和16字节对齐, 所以第一步将栈顶指针下移了56字节(56+8 是16的倍数)</p>
+<p>首先看出程序会计算出<code>add</code>函数内需要的栈空间, 这里我们开了长度为10的<code>int</code>数组, 需要40字节, 栈保护需要8字节,<br>
+在使用<code>call</code>调用函数时已经将返回地址8字节压入栈中, 为了使栈内存和16字节对齐, 所以第一步将栈顶指针下移了56字节(56+8 是16的倍数)</p>
 <p><code>rsp + 40</code>的位置用于存放栈保护内容, 而<code>rsp</code>, <code>rsp + 4</code> 则依次存放数组元素<code>array[0]</code>, <code>array[1]</code></p>
 <p><code>eax</code>寄存器作为返回值, 首先通过<code>xor</code>置0</p>
 <p>函数的参数依次存放在<code>edi</code>, <code>esi</code> 寄存器中, 使用<code>add</code>指令累加</p>
 <p>最后将栈指针上移56字节, 回到调用函数前的状态</p>
 <p>再看<code>main</code>函数</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">pushq  %rbx</span><br><span class="line">subq  <span class="number">$32</span>, %rsp</span><br><span class="line">movl  <span class="number">$4</span>, <span class="number">12</span>(%rsp)</span><br><span class="line">movl  <span class="number">$5</span>, <span class="number">16</span>(%rsp)</span><br><span class="line">movl  <span class="number">$6</span>, <span class="number">20</span>(%rsp)</span><br><span class="line">movl  <span class="number">$8</span>, %esi</span><br><span class="line">movl  <span class="number">$7</span>, %edi</span><br><span class="line"><span class="keyword">call</span>  <span class="keyword">add</span></span><br><span class="line">movl  %eax, %edx</span><br><span class="line">leaq  .LC0(%rip), %rsi</span><br><span class="line">movl  <span class="number">$1</span>, %edi</span><br><span class="line">movl  <span class="number">$0</span>, %eax</span><br><span class="line"><span class="keyword">call</span>  __printf_chk@PLT</span><br></pre></td></tr></table></figure>
-
 <p>除了一开始在栈上保存了<code>rbx</code>以外, 其它步骤基本和<code>add</code>函数一致, 也可以看到函数传参的过程(<code>mov</code>到相应寄存器)</p>
 <blockquote>
 <p>注意这里编译器自动优化, 将printf转换成了更安全的__printf_chk(int flag, const char * format)函数, 所以会多一个参数flag</p>
 </blockquote>
-<h4 id="无优化下"><a href="#无优化下" class="headerlink" title="无优化下"></a>无优化下</h4><p>首先还是先看<code>add</code>函数</p>
+<h4 id="无优化下">无优化下</h4>
+<p>首先还是先看<code>add</code>函数</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">pushq %rbp</span><br><span class="line"><span class="keyword">movq</span>  %rsp, %rbp</span><br><span class="line">subq  <span class="number">$64</span>, %rsp</span><br><span class="line">movl  %edi, -<span class="number">52</span>(%rbp)</span><br><span class="line">movl  %esi, -<span class="number">56</span>(%rbp)</span><br><span class="line">/* 栈保护</span><br><span class="line"><span class="keyword">movq</span>  %fs:<span class="number">40</span>, %rax</span><br><span class="line"><span class="keyword">movq</span>  %rax, -<span class="number">8</span>(%rbp)</span><br><span class="line">*/</span><br><span class="line">xorl  %eax, %eax</span><br><span class="line">movl  -<span class="number">52</span>(%rbp), %edx</span><br><span class="line">movl  -<span class="number">56</span>(%rbp), %eax</span><br><span class="line">addl  %eax, %edx</span><br><span class="line">movl  -<span class="number">40</span>(%rbp), %eax</span><br><span class="line">addl  %eax, %edx</span><br><span class="line">movl  -<span class="number">44</span>(%rbp), %eax</span><br><span class="line">addl  %edx, %eax</span><br><span class="line">/* 栈保护</span><br><span class="line"><span class="keyword">movq</span>  -<span class="number">8</span>(%rbp), %rcx</span><br><span class="line">xorq  %fs:<span class="number">40</span>, %rcx</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">leave</span></span><br><span class="line"><span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
-
 <p>与优化过的代码相比, 最大的变化就是使用了<code>rbp</code>寄存器</p>
-<p><code>rbp</code>存储当前函数的基地址, 一个正在执行的函数A, <code>rsp</code>是 A 的栈顶, <code>rbp</code> 是 A 的栈底<br><img src="https://pic.rmb.bdstatic.com/d54c105690f8ff541982deae78df5457.png" alt="stack-frame"></p>
+<p><code>rbp</code>存储当前函数的基地址, 一个正在执行的函数A, <code>rsp</code>是 A 的栈顶, <code>rbp</code> 是 A 的栈底<br>
+<img src="https://pic.rmb.bdstatic.com/d54c105690f8ff541982deae78df5457.png" alt="stack-frame"></p>
 <p>函数调用规定了被调用者需存储调用者的<code>rbp</code>信息(Callee Saved), 并且在函数执行结束时恢复</p>
 <p>于是, 使用<code>rbp</code>这一套的模板大概如下</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">pushq %rbp // 存储调用者的<span class="built_in">rbp</span></span><br><span class="line"><span class="keyword">movq</span>  %rsp, %rbp // 将<span class="built_in">rbp</span>设置为当前函数的基地址</span><br><span class="line">subq  <span class="number">$64</span>, %rsp // 为局部变量预留空间</span><br><span class="line"></span><br><span class="line">... // 使用<span class="built_in">rbp</span>作为内存寻址的基地址</span><br><span class="line"></span><br><span class="line"><span class="keyword">leave</span> // <span class="keyword">mov</span> %rbp, %rsp 和 <span class="keyword">pop</span> %rbp 指令的结合</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>可以看到, 尽管使用rbp寻址, 但仍有subq $64, %rsp操作, 这是为了避免在调用函数时可能的push操作造成和局部变量数据冲突</p>
 </blockquote>
-<h4 id="多参数的情况"><a href="#多参数的情况" class="headerlink" title="多参数的情况"></a>多参数的情况</h4><p>在64位程序中, 函数的参数会依次存在<code>%rdi, %rsi, %rdx, %rcx, %r8, %r9</code>, 这6个寄存器中, 如果参数多于6个怎么处理呢? 下面看一个例子</p>
+<h4 id="多参数的情况">多参数的情况</h4>
+<p>在64位程序中, 函数的参数会依次存在<code>%rdi, %rsi, %rdx, %rcx, %r8, %r9</code>, 这6个寄存器中, 如果参数多于6个怎么处理呢? 下面看一个例子</p>
 <p>修改<code>add</code>函数接收7个参数</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c, <span class="keyword">int</span> d, <span class="keyword">int</span> e, <span class="keyword">int</span> f, <span class="keyword">int</span> g)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">return</span> a + b + c + d + e + f + g + <span class="built_in">array</span>[<span class="number">2</span>] + <span class="built_in">array</span>[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>对应的汇编代码为(-Og优化)</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">// <span class="keyword">add</span> 函数</span><br><span class="line">subq  <span class="number">$56</span>, %rsp</span><br><span class="line">addl  %esi, %edi //a + b</span><br><span class="line">addl  %edx, %edi // c</span><br><span class="line">addl  %ecx, %edi // d</span><br><span class="line">addl  %r8d, %edi // e</span><br><span class="line">addl  %r9d, %edi // f</span><br><span class="line">movl  %edi, %eax  </span><br><span class="line">addl  <span class="number">64</span>(%rsp), %eax // g</span><br><span class="line">addl  <span class="number">8</span>(%rsp), %eax // array[<span class="number">1</span>]</span><br><span class="line">addl  <span class="number">4</span>(%rsp), %eax // array[<span class="number">0</span>]</span><br><span class="line">addq  <span class="number">$56</span>, %rsp</span><br><span class="line"></span><br><span class="line">// main 函数</span><br><span class="line">pushq <span class="number">$0</span>       // g</span><br><span class="line">movl  <span class="number">$0</span>, %r9d // f</span><br><span class="line">movl  <span class="number">$0</span>, %r8d // e</span><br><span class="line">movl  <span class="number">$0</span>, %ecx // d</span><br><span class="line">movl  <span class="number">$0</span>, %edx // c</span><br><span class="line">movl  <span class="number">$8</span>, %esi // b</span><br><span class="line">movl  <span class="number">$7</span>, %edi // a</span><br><span class="line"><span class="keyword">call</span>  <span class="keyword">add</span></span><br><span class="line">addq  <span class="number">$16</span>, %rsp</span><br></pre></td></tr></table></figure>
-
-<p>可以看到, 在main函数中通过<code>push</code>操作将第7个参数压栈, 调用完成后通过<code>add</code>释放栈空间<br>这也是上面说的为什么即使有<code>rbp</code>作为基地址, 仍然要移动<code>rsp</code>的原因</p>
+<p>可以看到, 在main函数中通过<code>push</code>操作将第7个参数压栈, 调用完成后通过<code>add</code>释放栈空间<br>
+这也是上面说的为什么即使有<code>rbp</code>作为基地址, 仍然要移动<code>rsp</code>的原因</p>
 </br>
-
 <p>本文大致讲了两种函数调用的方式, 可以看出, 仅使用<code>rsp</code>代码会简洁不少, 而<code>rbp</code>方式仅仅是方便于调试, 所以在开了优化的情况下, 一般会被编译为<code>rsp</code>方式</p>
-<p>下一篇将讲述32位程序的情况, 并与64位程序做一个对比总结</p>
+<p>下一篇将讲述32位程序的情况, 并与64位程序做一个对比总结<br>
+<br></p>
+<h3>转载申请</h3>
+<p><a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by/4.0/"><img alt="知识共享许可协议" style="zoom: 25%;display: inline" src="/images/by.png"></a></p>
+<p>本文<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可，转载时请注明原文链接</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/study/assembly-function-call-32/">上一篇</a><a class="next" href="/tutorial/mpv-config/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '1ad726ece750d0552748',     
     clientSecret: '6917691391883046d263b52a7107fab68e457194',     
