@@ -79,7 +79,7 @@ desc: '每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-c
 
 ### 部署服务
 
-1. 安装`docker`和`docker-compose` 
+1. 安装`docker`和`docker-compose`
 
     ``` bash
     # install docker
