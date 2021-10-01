@@ -49,10 +49,10 @@ desc: '每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-c
     ``` yml
     ...
     volumes:
-      # 将 music.xhyh.site 改为自己域名地址
-      - /etc/letsencrypt/live/music.xhyh.site/fullchain.pem:/etc/nginx/certs/music/fullchain.pem:ro
-      - /etc/letsencrypt/live/music.xhyh.site/chain.pem:/etc/nginx/certs/music/chain.pem:ro
-      - /etc/letsencrypt/live/music.xhyh.site/privkey.pem:/etc/nginx/certs/music/privkey.pem:ro
+      # 将 music.xhyh.tech 改为自己域名地址
+      - /etc/letsencrypt/live/music.xhyh.tech/fullchain.pem:/etc/nginx/certs/music/fullchain.pem:ro
+      - /etc/letsencrypt/live/music.xhyh.tech/chain.pem:/etc/nginx/certs/music/chain.pem:ro
+      - /etc/letsencrypt/live/music.xhyh.tech/privkey.pem:/etc/nginx/certs/music/privkey.pem:ro
     ...
     ```
 
@@ -62,8 +62,8 @@ desc: '每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-c
 
     ``` yml
     ...
-    # 修改 music.xhyh.site 为自己的域名
-    command: -s -e https://music.xhyh.site
+    # 修改 music.xhyh.tech 为自己的域名
+    command: -s -e https://music.xhyh.tech
     ...
     ```
 
@@ -72,7 +72,7 @@ desc: '每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-c
     在 [nginx-data/music.conf](https://github.com/achjqz/nginx/blob/main/nginx-data/music.conf) 中 修改 server_name
 
     ``` conf
-    server_name music.xhyh.site; # 改为你自己的域名
+    server_name music.xhyh.tech; # 改为你自己的域名
     ```
 
     > 如果部署在阿里云又没有备案，则可以把 443 端口换成 2096, 这样可以规避备案提醒

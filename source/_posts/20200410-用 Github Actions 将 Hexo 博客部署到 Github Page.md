@@ -10,7 +10,7 @@ categories:
 desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page'
 ---
 
-[上篇博客](https://blog.xhyh.site/tutorial/zero-to-hexo1/)中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page
+[上篇博客](https://blog.xhyh.tech/tutorial/zero-to-hexo1/)中已经实现在本地预览博客, 本篇会将本地博客部署到Github Page
 
 <!--more-->
 
@@ -45,7 +45,7 @@ desc: '上篇博客中已经实现在本地预览博客, 本篇会将本地博�
 
 有了ssh私钥可以实现免密码将博客推送到Github
 
-具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.site/tutorial/linux-ssh/), 只用完成第一部分ssh生成
+具体配置可以参照[Linux下的ssh配置](https://blog.xhyh.tech/tutorial/linux-ssh/), 只用完成第一部分ssh生成
 
 ### 将公钥添加到Github
 
