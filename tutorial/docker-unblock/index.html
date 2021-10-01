@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> docker 部署 nginx 和 UnblockNeteaseMusic · 潇晗宇浩的博客</title><meta name="description" content="每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-compose-letsencrypt-nginx-proxy-companion, 一键生成证书，配置 nginx，反向代理服务。但用了后发现也没有那么方便，体量太重，也不好自己定制化修改配置，于是自己写了 docker-compose，方便配置 nginx，也方便接入新的服务。这里以解锁网易云音乐为例，将整个流程走一遍"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://blog.xhyh.site/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> docker 部署 nginx 和 UnblockNeteaseMusic · 潇晗宇浩的博客</title><meta name="description" content="每次配置 nginx 都是一件烦人的事，原来尝试用过 docker-compose-letsencrypt-nginx-proxy-companion, 一键生成证书，配置 nginx，反向代理服务。但用了后发现也没有那么方便，体量太重，也不好自己定制化修改配置，于是自己写了 docker-compose，方便配置 nginx，也方便接入新的服务。这里以解锁网易云音乐为例，将整个流程走一遍"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://blog.xhyh.tech/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">docker 部署 nginx 和 UnblockNeteaseMusic</h1><div class="post-info">Nov 3, 2020<a class="tag-title" href="/tags/docker/">#docker</a><a class="tag-title" href="/tags/nginx/">#nginx</a></div><div class="post-content"><p>每次配置 nginx 都是一件烦人的事，原来尝试用过 <code>docker-compose-letsencrypt-nginx-proxy-companion</code>, 一键生成证书，配置 nginx，反向代理服务。但用了后发现也没有那么方便，体量太重，也不好自己定制化修改配置，于是自己写了 docker-compose，方便配置 nginx，也方便接入新的服务。这里以解锁网易云音乐为例，将整个流程走一遍</p>
-<a id="more"></a>
+<span id="more"></span>
 <h3 id="需求">需求</h3>
 <p>按照 UnblockNeteaseMusic (下面简称unblock) 的 <a target="_blank" rel="noopener" href="https://github.com/nondanee/UnblockNeteaseMusic/issues/368">iOS配置经验</a> 所说</p>
 <blockquote>
@@ -24,17 +24,17 @@
 <li>
 <p>修改证书位置</p>
 <p>在 <a target="_blank" rel="noopener" href="https://github.com/achjqz/nginx/blob/main/docker-compose.yml">docker-compose.yml</a> 中修改 volumes</p>
- <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="comment"># 将 music.xhyh.site 改为自己域名地址</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.site/fullchain.pem:/etc/nginx/certs/music/fullchain.pem:ro</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.site/chain.pem:/etc/nginx/certs/music/chain.pem:ro</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.site/privkey.pem:/etc/nginx/certs/music/privkey.pem:ro</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="comment"># 将 music.xhyh.tech 改为自己域名地址</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.tech/fullchain.pem:/etc/nginx/certs/music/fullchain.pem:ro</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.tech/chain.pem:/etc/nginx/certs/music/chain.pem:ro</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/etc/letsencrypt/live/music.xhyh.tech/privkey.pem:/etc/nginx/certs/music/privkey.pem:ro</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
 </li>
 <li>
 <p>修改 endpoint 地址</p>
 <p>在 <a target="_blank" rel="noopener" href="https://github.com/achjqz/nginx/blob/main/music/docker-compose.yml">music/docker-compose.yml</a> 中修改 command</p>
- <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="comment"># 修改 music.xhyh.site 为自己的域名</span></span><br><span class="line"><span class="attr">command:</span> <span class="string">-s</span> <span class="string">-e</span> <span class="string">https://music.xhyh.site</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="comment"># 修改 music.xhyh.tech 为自己的域名</span></span><br><span class="line"><span class="attr">command:</span> <span class="string">-s</span> <span class="string">-e</span> <span class="string">https://music.xhyh.tech</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
 </li>
 <li>
 <p>修改 nginx config</p>
 <p>在 <a target="_blank" rel="noopener" href="https://github.com/achjqz/nginx/blob/main/nginx-data/music.conf">nginx-data/music.conf</a> 中 修改 server_name</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server_name music.xhyh.site; # 改为你自己的域名</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server_name music.xhyh.tech; # 改为你自己的域名</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>如果部署在阿里云又没有备案，则可以把 443 端口换成 2096, 这样可以规避备案提醒</p>
 </blockquote>
@@ -56,9 +56,10 @@
 </li>
 <li>
 <p>运行 nginx</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 退回到项目根目录</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><br>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 退回到项目根目录</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<br>
 <h3>转载申请</h3>
 <p><a rel="license noopener" class="license" target="_blank" href="http://creativecommons.org/licenses/by/4.0/"><img alt="知识共享许可协议" style="zoom: 25%;display: inline" src="/images/by.png"></a></p>
 <p>本文<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可，转载时请注明原文链接</p>
@@ -71,7 +72,7 @@
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 - 2021 <a href="https://blog.xhyh.site">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 - 2021 <a href="https://blog.xhyh.tech">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>

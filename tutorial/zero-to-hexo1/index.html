@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建 Hexo 博客 · 潇晗宇浩的博客</title><meta name="description" content="用 Hexo + Github 来搭建个人博客已经很普遍了, 正好 Github action 发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建 hexo 博客并用 Github Actions 发布到 Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://blog.xhyh.site/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 零基础搭建 Hexo 博客 · 潇晗宇浩的博客</title><meta name="description" content="用 Hexo + Github 来搭建个人博客已经很普遍了, 正好 Github action 发布, 可以利用持续集成使得部署更加轻松 \ 本文从零开始, 搭建 hexo 博客并用 Github Actions 发布到 Github Page"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/images/logo.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://blog.xhyh.tech/rss2.xml" title="潇晗宇浩的博客"><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/rss2.xml" title="潇晗宇浩的博客" type="application/rss+xml">
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/rss2.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">零基础搭建 Hexo 博客</h1><div class="post-info">Apr 14, 2018<a class="tag-title" href="/tags/hexo/">#hexo</a><a class="tag-title" href="/tags/blog/">#blog</a></div><div class="post-content"><p>用 Hexo + Github 来搭建个人博客已经很普遍了, 正好 Github action 发布, 可以利用持续集成使得部署更加轻松 <br>
 本文从零开始, 搭建 hexo 博客并用 Github Actions 发布到 Github Page</p>
-<a id="more"></a>
+<span id="more"></span>
 <h3 id="工具介绍及安装">工具介绍及安装</h3>
 <ul>
 <li><code>Git</code>  版本管理工具, 用于管理写的文章, 并和 Github 仓库建立连接, <a target="_blank" rel="noopener" href="https://git-scm.com/">官网安装</a></li>
@@ -44,7 +44,7 @@
 </li>
 <li>
 <p>博客url配置</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">http://blog.xhyh.site</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:category/:urlname/</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:year:month:day-:title.md</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">http://blog.xhyh.tech</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:category/:urlname/</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:year:month:day-:title.md</span></span><br></pre></td></tr></table></figure>
 <div class="warning">
 <p>为方便整理, 生成新文章会有时间前缀, 而我们不希望在文章链接中包含时间, 这里使用了urlname, 需要在每篇文章头中添加这个变量</p>
 </div>
@@ -61,7 +61,7 @@
 <p>默认并没有category, tag页面, 需要在命令行中输入命令添加</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page category</span><br></pre></td></tr></table></figure>
 </br>
-<p><a href="https://blog.xhyh.site/tutorial/zero-to-hexo2/">下一篇</a>将介绍如何使用 Github Actions 部署博客<br>
+<p><a href="https://blog.xhyh.tech/tutorial/zero-to-hexo2/">下一篇</a>将介绍如何使用 Github Actions 部署博客<br>
 <br></p>
 <h3>转载申请</h3>
 <p><a rel="license noopener" class="license" target="_blank" href="http://creativecommons.org/licenses/by/4.0/"><img alt="知识共享许可协议" style="zoom: 25%;display: inline" src="/images/by.png"></a></p>
@@ -82,7 +82,7 @@
     admin: 'achjqz',     
 })   
 gitalk.render('gitalk-container')
-</script><div class="copyright"><p>© 2020 - 2021 <a href="https://blog.xhyh.site">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
+</script><div class="copyright"><p>© 2020 - 2021 <a href="https://blog.xhyh.tech">xhyh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-117536047-1"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-117536047-1');</script></body></html>
